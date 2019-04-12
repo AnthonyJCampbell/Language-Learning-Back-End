@@ -1,0 +1,13 @@
+{
+  "name": "lang",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/AnthonyJCampbell/lang.git",
+  "author": "AnthonyJCampbell <anthony@anthonyjcampbell.com>",
+  "license": "MIT",
+  "dependencies": {
+    "knex": "^0.16.5",
+    "nodemon": "^1.18.11",
+    "sqlite3": "^4.0.6"
+  }
+}
