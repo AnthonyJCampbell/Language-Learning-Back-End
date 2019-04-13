@@ -3,6 +3,7 @@ const server = express();
 
 // Import Routes
 // const routes = require('./location');
+const userRoutes = require('./../data/routes/userRoutes')
 
 server.use(express.json());
 
@@ -11,6 +12,6 @@ server.get('/', (req, res) => {
 })
 
 // Routing && prefixing URLs
-// server.use('/api/dishes', routeName)
+server.use('/api/users', userRoutes)
 
 module.exports = server;
