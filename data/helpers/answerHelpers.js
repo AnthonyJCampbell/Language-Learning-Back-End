@@ -24,6 +24,6 @@ function editAnswer(answer_id) {
   return db('answers')
 }
 
-function deleteAnswer(id) {
-  return db('answers').where({id}).del()
+function deleteAnswer(answer_id) {
+  return db('answers').where({answer_id}).del()
 }
