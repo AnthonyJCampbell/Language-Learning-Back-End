@@ -13,6 +13,7 @@ exports.up = function(knex, Promise) {
 
       sessions
         .timestamp('start_of_session')
+        .defaultTo(knex.fn.now())
         .notNullable();
       sessions
         .integer('length_of_session')

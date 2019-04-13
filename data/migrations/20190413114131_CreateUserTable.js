@@ -14,13 +14,6 @@ exports.up = function(knex, Promise) {
       .string('password', 256)
       .notNullable();
     users
-      .timestamp('last_session_at')
-      .unsigned()
-      .references('end_of_session')
-      .inTable('sessions')
-      .onDelete('CASCADE')
-      .onUpdate('CASCADE');
-    users
       .timestamp('created_at')
       .defaultTo(knex.fn.now())
   })
