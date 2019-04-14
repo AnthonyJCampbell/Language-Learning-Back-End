@@ -12,7 +12,6 @@ const error500 = {
   message: "Something went wrong when getting your request."
 }
 
-
 router.get('/', (req, res) => {
   users.getPhrases()
   .then(data => {
