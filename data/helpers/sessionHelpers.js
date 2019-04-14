@@ -15,8 +15,8 @@ function getSession(filter) {
   return db('sessions').where(filter)
 }
 
-function startSession(session){
-  return db('sessions').insert(session)
+function startSession(user_id){
+  return db('sessions').insert(user_id)
 }
 
 function endSession() {
