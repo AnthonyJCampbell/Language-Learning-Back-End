@@ -11,16 +11,16 @@ exports.up = function(knex, Promise) {
       .onDelete('CASCADE')
       .onUpdate('CASCADE');
 
-      sessions
-        .timestamp('start_of_session')
-        .defaultTo(knex.fn.now())
-        .notNullable();
-      sessions
-        .integer('length_of_session')
-        .nullable();
-      sessions
-        .timestamp('end_of_session')
-        .nullable();
+    sessions
+      .timestamp('start_of_session')
+      .defaultTo(knex.fn.now())
+      .notNullable();
+    sessions
+      .integer('length_of_session')
+      .nullable();
+    sessions
+      .timestamp('end_of_session')
+      .nullable();
   })
 };
 
