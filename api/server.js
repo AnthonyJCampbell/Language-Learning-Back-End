@@ -1,5 +1,6 @@
 const express = require('express');
 const server = express();
+const cors = require('cors')
 
 // Import Routes
 // const routes = require('./location');
@@ -9,6 +10,7 @@ const vocabRoutes = require('./../data/routes/vocabRoutes')
 const answerRoutes = require('./../data/routes/answerRoutes')
 
 server.use(express.json());
+server.use(cors ())
 
 server.get('/', (req, res) => {
   res.status(200).json({ "message": "Server's alive!"})
