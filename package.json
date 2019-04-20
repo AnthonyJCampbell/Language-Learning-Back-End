@@ -2,7 +2,7 @@
   "name": "lang",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://github.com/AnthonyJCampbell/lang.git",
+  "repository": "https://github.com/AnthonyJCampbell/Language-Learning-Back-End.git",
   "author": "AnthonyJCampbell <anthony@anthonyjcampbell.com>",
   "license": "MIT",
   "dependencies": {
