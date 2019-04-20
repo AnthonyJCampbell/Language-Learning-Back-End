@@ -1,6 +1,8 @@
 const express = require('express');
-const server = express();
 const cors = require('cors')
+const helmet = require('helmet');
+
+const server = express();
 
 // Import Routes
 // const routes = require('./location');
@@ -9,6 +11,7 @@ const sessionRoutes = require('./../data/routes/sessionRoutes')
 const vocabRoutes = require('./../data/routes/vocabRoutes')
 const answerRoutes = require('./../data/routes/answerRoutes')
 
+server.use(helmet())
 server.use(express.json());
 server.use(cors ())
 
