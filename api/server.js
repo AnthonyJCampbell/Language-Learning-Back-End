@@ -11,6 +11,9 @@ const sessionRoutes = require('./../data/routes/sessionRoutes')
 const vocabRoutes = require('./../data/routes/vocabRoutes')
 const answerRoutes = require('./../data/routes/answerRoutes')
 
+const users = require('../data/helpers/userHelpers');
+
+
 server.use(helmet())
 server.use(express.json());
 server.use(cors ())
@@ -53,15 +56,22 @@ server.post('/login', (req, res) => {
 
 // REGISTER
 server.post('/register', (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password) {
+  const { username, email_address, password } = req.body;
+  if (!username || !email_address || !password) {
     return res.status(404).json({message: "GET ME A DAMN IDENTIFIER AND PASSWORD!"})
   }
-  if (!email.includes('@') || !email.includes('.')) {
-    // return error saying you need to pass a valid email address
-  }
+  users.addUser(req.body)
+    .then(data => {
+      res.status(200).json(data)
+    })
+    .catch(() => {
+      res.status(500).json({message: "Whoops!"})
+    })
+  // if (!email.includes('@') || !email.includes('.')) {
+  //   // return error saying you need to pass a valid email address
+  // }
   // On first sign-up, username is set to email. User can later change it to whatever he desires.
-  const username = email;
+  // const username = email;
   // Hash password
   // const newUser = { username, email, password: hashedPassword}
   // createUser(newUser)
