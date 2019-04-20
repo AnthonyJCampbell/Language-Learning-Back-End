@@ -23,7 +23,7 @@ server.post('/login', (req, res) => {
     return res.status(404).json({message: "GET ME A DAMN IDENTIFIER AND PASSWORD!"})
   }
   if (identifier.includes('@') && identifier.includes('.')) {
-    // LOGIN WITH EMAIL
+    // LOGIN WITH EMAIL 
     // getUser(identifier)
     // Evaluate hashed password to provided hashed password
     // If matching, 
