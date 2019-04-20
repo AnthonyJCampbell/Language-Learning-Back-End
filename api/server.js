@@ -49,7 +49,7 @@ server.post('/login', (req, res) => {
 // REGISTER
 server.post('/register', (req, res) => {
   const { email, password } = req.body;
-  if (!email || ! password) {
+  if (!email || !password) {
     return res.status(404).json({message: "GET ME A DAMN IDENTIFIER AND PASSWORD!"})
   }
   if (!email.includes('@') || !email.includes('.')) {
