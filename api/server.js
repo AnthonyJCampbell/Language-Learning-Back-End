@@ -24,11 +24,12 @@ server.get('/', (req, res) => {
 
 // LOGIN
 server.post('/login', (req, res) => {
-  const { identifier, password } = req.body
-  if (!identifier || !password) {
-    return res.status(404).json({message: "GET ME A DAMN IDENTIFIER AND PASSWORD!"})
+  const { password } = req.body
+  if (!req.body.username || !req.body.email_address || !password) {
+    return res.status(404).json({message: "Please provide either a 'username' or a 'email_address' and a 'password'"})
   }
-  if (identifier.includes('@') && identifier.includes('.')) {
+  // Login with email is the default, since new sign-ups still have automatically-generated usernames
+  if (req.body.email_address && req.body.email_address.includes('@') && identifier.includes('.')) {
     // LOGIN WITH EMAIL 
     // getUser(identifier)
     // Evaluate hashed password to provided hashed password
@@ -55,23 +56,19 @@ server.post('/login', (req, res) => {
 })
 
 // REGISTER
-server.post('/register', (req, res) => {
-  const { username, email_address, password } = req.body;
-  if (!username || !email_address || !password) {
-    return res.status(404).json({message: "GET ME A DAMN IDENTIFIER AND PASSWORD!"})
-  }
-  users.addUser(req.body)
+// Both username, email_address are required to be unique in the DB.
+server.post('/register', async (req, res) => {
+  const { email_address, password } = req.body;
+  const username = `user-${email_address}`
+  if (!username || !email_address || !password) {return res.status(404).json({message: "Make sure to pass a 'username', 'email_address', and 'password"})}
+  if (!email_address.includes('@') || !email_address.includes('.')) {return res.status(404).json({message: "Make sure to pass a valid email address!"})}
+  await users.addUser({"email_address": email_address, "password": password, "username": username})
     .then(data => {
       res.status(200).json(data)
     })
     .catch(() => {
       res.status(500).json({message: "Whoops!"})
     })
-  // if (!email.includes('@') || !email.includes('.')) {
-  //   // return error saying you need to pass a valid email address
-  // }
-  // On first sign-up, username is set to email. User can later change it to whatever he desires.
-  // const username = email;
   // Hash password
   // const newUser = { username, email, password: hashedPassword}
   // createUser(newUser)
