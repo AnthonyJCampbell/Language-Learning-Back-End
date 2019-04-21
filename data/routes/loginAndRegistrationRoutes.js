@@ -19,17 +19,37 @@ router.post('/login', (req, res) => {
 
   // Login with email is the default, since new sign-ups still have automatically-generated usernames
   if (req.body.email_address && req.body.email_address.includes('@') && identifier.includes('.')) {
-    
-    // LOGIN WITH EMAIL 
-    // getUser(identifier)
-    // Evaluate hashed password to provided hashed password
+    users.getUser(email_address)
+      .then(user => {
+        // SUCCESS CASE: CORRECT USERNAME & PASSWORD.
+        if (user && bcrypt.compareSync(password, user.password)) {
+          const token = tokenService(user);
+          // RETURNS A MESSAGE, A TOKEN, AND THE USER OBJECT
+          res.status(200).json({
+            token,
+            user
+          });
+        }
+        // FAIL: INCORRECT PASSWORD
+        if (user && !bcrypt.compareSync(password, user.password)) {
+          res.status(404).json({ message: 'Invalid password!' });
+        }
+        // FAIL: INCORRECT USERNAME (DEFAULT)
+        else {
+          res.status(404).json({
+            message: `There's no user with an 'email_address' of ${req.body.email_address}`
+          });
+        }
+      })
+      .catch(() => {
+        res.status(500).json({ message: "Something's gone wrong!"})
+      })
+
     // If matching, 
       // create newSession
-      // set token to LocalStorage
       // res.status(200)
-    // If not matching
-      // Send back error saying invalid credentials
 
+      
   // Login with Username
   } else {
     
