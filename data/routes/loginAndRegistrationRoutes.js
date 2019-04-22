@@ -80,7 +80,7 @@ router.post('/login', (req, res) => {
 
 // REGISTER
 // Both username, email_address are required to be unique in the DB.
-router.post('/register', async (req, res) => {
+router.post('/register', (req, res) => {
   const { email_address, password } = req.body;
   const username = `user-${email_address}`
   
@@ -88,21 +88,14 @@ router.post('/register', async (req, res) => {
   if (!email_address.includes('@') || !email_address.includes('.')) {return res.status(404).json({message: "Make sure to pass a valid email address!"})}
   // Check email address for special characters that we don't use in the DB
   
-  await users.addUser({"email_address": email_address, "password": password, "username": username})
+  users.addUser({"email_address": email_address, "password": password, "username": username})
     .then(data => {
+      console.log(data)
       res.status(200).json(data)
     })
     .catch(() => {
       res.status(500).json({message: "Whoops!"})
     })
-  // Hash password
-  // const newUser = { username, email, password: hashedPassword}
-  // createUser(newUser)
-  // 'LOGIN' PROCEDURE
-  // create newSession
-  // set token to LocalStrorage
-  // res.status(201)
-  // push to '/' -> Done on client
 })
 
 module.exports = router;
