@@ -6,6 +6,7 @@ const router = express.Router();
 router.use(express.json());
 
 const users = require('../helpers/userHelpers');
+const sessions = require('../helpers/sessionHelpers');
 
 // LOGIN
 router.post('/login', (req, res) => {
@@ -24,6 +25,7 @@ router.post('/login', (req, res) => {
         // SUCCESS CASE: CORRECT USERNAME & PASSWORD.
         if (user && bcrypt.compareSync(password, user.password)) {
           const token = tokenService(user);
+          sessions.startSession(user.user_id)
           // RETURNS A MESSAGE, A TOKEN, AND THE USER OBJECT
           res.status(200).json({
             token,
@@ -45,31 +47,40 @@ router.post('/login', (req, res) => {
         res.status(500).json({ message: "Something's gone wrong!"})
       })
 
-    // If matching, 
-      // create newSession
-      // res.status(200)
-
-      
-  // Login with Username
-  } else {
-    
-    // Check email address for special characters that we don't use in the DB
-    
-    // LOGIN WITH USERNAME
-    // getUser(identifier)
-    // Evaluate hashed password to provided hashed password
-    // If matching, 
-      // create newSession
-      // set token to LocalStorage
-      // res.status(200)
-    // If not matching
-      // Send back error saying invalid credentials
+    } else {
+    // Login with Username
+    users.getUser(username)
+      .then(user => {
+        // SUCCESS CASE: CORRECT USERNAME & PASSWORD.
+        if (user && bcrypt.compareSync(password, user.password)) {
+          const token = tokenService(user);
+          sessions.startSession(user.user_id)
+          // RETURNS A MESSAGE, A TOKEN, AND THE USER OBJECT
+          res.status(200).json({
+            token,
+            user
+          });
+        }
+        // FAIL: INCORRECT PASSWORD
+        if (user && !bcrypt.compareSync(password, user.password)) {
+          res.status(404).json({ message: 'Invalid password!' });
+        }
+        // FAIL: INCORRECT USERNAME (DEFAULT)
+        else {
+          res.status(404).json({
+            message: `There's no user with an 'username' of ${req.body.username}`
+          });
+        }
+      })
+      .catch(() => {
+        res.status(500).json({ message: "Something's gone wrong!"})
+      })
   }
 })
 
 // REGISTER
 // Both username, email_address are required to be unique in the DB.
-router.post('/register', async (req, res) => {
+router.post('/register', (req, res) => {
   const { email_address, password } = req.body;
   const username = `user-${email_address}`
   
@@ -77,21 +88,14 @@ router.post('/register', async (req, res) => {
   if (!email_address.includes('@') || !email_address.includes('.')) {return res.status(404).json({message: "Make sure to pass a valid email address!"})}
   // Check email address for special characters that we don't use in the DB
   
-  await users.addUser({"email_address": email_address, "password": password, "username": username})
+  users.addUser({"email_address": email_address, "password": password, "username": username})
     .then(data => {
+      console.log(data)
       res.status(200).json(data)
     })
     .catch(() => {
       res.status(500).json({message: "Whoops!"})
     })
-  // Hash password
-  // const newUser = { username, email, password: hashedPassword}
-  // createUser(newUser)
-  // 'LOGIN' PROCEDURE
-  // create newSession
-  // set token to LocalStrorage
-  // res.status(201)
-  // push to '/' -> Done on client
 })
 
 module.exports = router;
