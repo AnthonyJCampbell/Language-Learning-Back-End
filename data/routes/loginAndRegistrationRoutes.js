@@ -6,6 +6,7 @@ const router = express.Router();
 router.use(express.json());
 
 const users = require('../helpers/userHelpers');
+const sessions = require('../helpers/sessionHelpers');
 
 // LOGIN
 router.post('/login', (req, res) => {
@@ -24,6 +25,7 @@ router.post('/login', (req, res) => {
         // SUCCESS CASE: CORRECT USERNAME & PASSWORD.
         if (user && bcrypt.compareSync(password, user.password)) {
           const token = tokenService(user);
+          sessions.startSession(user.user_id)
           // RETURNS A MESSAGE, A TOKEN, AND THE USER OBJECT
           res.status(200).json({
             token,
@@ -45,25 +47,34 @@ router.post('/login', (req, res) => {
         res.status(500).json({ message: "Something's gone wrong!"})
       })
 
-    // If matching, 
-      // create newSession
-      // res.status(200)
-
-      
-  // Login with Username
-  } else {
-    
-    // Check email address for special characters that we don't use in the DB
-    
-    // LOGIN WITH USERNAME
-    // getUser(identifier)
-    // Evaluate hashed password to provided hashed password
-    // If matching, 
-      // create newSession
-      // set token to LocalStorage
-      // res.status(200)
-    // If not matching
-      // Send back error saying invalid credentials
+    } else {
+    // Login with Username
+    users.getUser(username)
+      .then(user => {
+        // SUCCESS CASE: CORRECT USERNAME & PASSWORD.
+        if (user && bcrypt.compareSync(password, user.password)) {
+          const token = tokenService(user);
+          sessions.startSession(user.user_id)
+          // RETURNS A MESSAGE, A TOKEN, AND THE USER OBJECT
+          res.status(200).json({
+            token,
+            user
+          });
+        }
+        // FAIL: INCORRECT PASSWORD
+        if (user && !bcrypt.compareSync(password, user.password)) {
+          res.status(404).json({ message: 'Invalid password!' });
+        }
+        // FAIL: INCORRECT USERNAME (DEFAULT)
+        else {
+          res.status(404).json({
+            message: `There's no user with an 'username' of ${req.body.username}`
+          });
+        }
+      })
+      .catch(() => {
+        res.status(500).json({ message: "Something's gone wrong!"})
+      })
   }
 })
 
