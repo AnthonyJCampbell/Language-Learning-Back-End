@@ -12,9 +12,7 @@ const getUser = async filter => {
 }
 
 const addUser = async newUser => {
-  console.log(newUser)
   const password = bcrypt.hashSync(newUser.password, 12);
-  console.log(newUser)
   await db('users').insert({
     ...newUser,
     password
@@ -49,6 +47,6 @@ module.exports = {
   getUsers,
   getUser,
   addUser,
-  // editUser,
+  updateUser,
   deleteUser
 }
