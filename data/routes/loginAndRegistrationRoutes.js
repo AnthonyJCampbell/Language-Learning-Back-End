@@ -25,7 +25,6 @@ router.post('/login', (req, res) => {
         // SUCCESS CASE: CORRECT USERNAME & PASSWORD.
         if (user && bcrypt.compareSync(password, user.password)) {
           const token = tokenService(user);
-          sessions.startSession(user.user_id)
           // RETURNS A MESSAGE, A TOKEN, AND THE USER OBJECT
           res.status(200).json({
             token,
@@ -54,7 +53,6 @@ router.post('/login', (req, res) => {
         // SUCCESS CASE: CORRECT USERNAME & PASSWORD.
         if (user && bcrypt.compareSync(password, user.password)) {
           const token = tokenService(user);
-          sessions.startSession(user.user_id)
           // RETURNS A MESSAGE, A TOKEN, AND THE USER OBJECT
           res.status(200).json({
             token,
@@ -90,7 +88,6 @@ router.post('/register', (req, res) => {
   
   users.addUser({"email_address": email_address, "password": password, "username": username})
     .then(data => {
-      console.log(data)
       res.status(200).json(data)
     })
     .catch(() => {
