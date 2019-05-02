@@ -27,24 +27,24 @@ router.post('/login', (req, res) => {
           const token = tokenService(user);
           // RETURNS A MESSAGE, A TOKEN, AND THE USER OBJECT
           console.log(token)
-          // res.status(200).json({
-          //   token,
-          //   user
-          // });
+          return res.status(200).json({
+            token,
+            user
+          });
         }
         // FAIL: INCORRECT PASSWORD
         if (user && !bcrypt.compareSync(password, user.password)) {
-          res.status(404).json({ message: 'Invalid password!' });
+          return res.status(404).json({ message: 'Invalid password!' });
         }
         // FAIL: INCORRECT USERNAME (DEFAULT)
         else {
-          res.status(404).json({
+          return res.status(404).json({
             message: `There's no user with an 'email_address' of ${req.body.email_address}`
           });
         }
       })
       .catch(() => {
-        res.status(500).json({ message: "Something's gone wrong!"})
+        return res.status(500).json({ message: "Something's gone wrong!"})
       })
 
     // } else {
