@@ -3,7 +3,7 @@ const secret = process.env.SECRET || 'This is the default secret...';
 
 module.exports = (user) => {
   const payload = {
-    subject: user.id,
+    subject: user.user_id,
     username: user.username
   };
   const options = {

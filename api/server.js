@@ -14,18 +14,18 @@ const answerRoutes = require('./../data/routes/answerRoutes')
 
 server.use(helmet())
 server.use(express.json());
-server.use(cors ())
-
-server.get('/', (req, res) => {
-  res.status(200).json({ "message": "Server's alive!"})
-})
+server.use(cors())
 
 // Routing && prefixing URLs
 // server.use('URL', _ROUTES_);
-server.use('/', loginAndRegistrationRoutes)
+server.use('/api', loginAndRegistrationRoutes)
 server.use('/api/users', userRoutes)
 server.use('/api/sessions', sessionRoutes)
 server.use('/api/vocab', vocabRoutes)
 server.use('/api/answers', answerRoutes)
+
+server.get('/', (req, res) => {
+  res.status(200).json({ "message": "Server's alive!"})
+})
 
 module.exports = server;
