@@ -19,7 +19,7 @@ router.post('/login', (req, res) => {
   }
   
   // Login with email is the default, since new sign-ups still have automatically-generated usernames
-  // if (req.body.email_address && req.body.email_address.includes('@') && identifier.includes('.')) {
+  if (email_address.includes('@') && email_address.includes('.')) {
     users.getUserByEmail(email_address)
       .then(user => {
       // SUCCESS CASE: CORRECT USERNAME & PASSWORD.
@@ -47,34 +47,35 @@ router.post('/login', (req, res) => {
         return res.status(500).json({ message: "Something's gone wrong!"})
       })
 
-    // } else {
+    } else {
+      console.log('im')
     // Login with Username
-    // users.getUser(username)
-    //   .then(user => {
-    //     // SUCCESS CASE: CORRECT USERNAME & PASSWORD.
-    //     if (user && bcrypt.compareSync(password, user.password)) {
-    //       const token = tokenService(user);
-    //       // RETURNS A MESSAGE, A TOKEN, AND THE USER OBJECT
-    //       res.status(200).json({
-    //         token,
-    //         user
-    //       });
-    //     }
-    //     // FAIL: INCORRECT PASSWORD
-    //     if (user && !bcrypt.compareSync(password, user.password)) {
-    //       res.status(404).json({ message: 'Invalid password!' });
-    //     }
-    //     // FAIL: INCORRECT USERNAME (DEFAULT)
-    //     else {
-    //       res.status(404).json({
-    //         message: `There's no user with an 'username' of ${req.body.username}`
-    //       });
-    //     }
-    //   })
-    //   .catch(() => {
-    //     res.status(500).json({ message: "Something's gone wrong!"})
-    //   })
-  // }
+    users.getUser(username)
+      .then(user => {
+        // SUCCESS CASE: CORRECT USERNAME & PASSWORD.
+        if (user && bcrypt.compareSync(password, user.password)) {
+          const token = tokenService(user);
+          // RETURNS A MESSAGE, A TOKEN, AND THE USER OBJECT
+          res.status(200).json({
+            token,
+            user
+          });
+        }
+        // FAIL: INCORRECT PASSWORD
+        if (user && !bcrypt.compareSync(password, user.password)) {
+          res.status(404).json({ message: 'Invalid password!' });
+        }
+        // FAIL: INCORRECT USERNAME (DEFAULT)
+        else {
+          res.status(404).json({
+            message: `There's no user with an 'username' of ${req.body.username}`
+          });
+        }
+      })
+      .catch(() => {
+        res.status(500).json({ message: "Something's gone wrong!"})
+      })
+  }
 })
 
 // REGISTER
