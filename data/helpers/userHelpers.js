@@ -11,6 +11,10 @@ const getUser = async filter => {
     .first()
 }
 
+const getUserByEmail = email_address => {
+  return db('users').where({email_address}).first()
+}
+
 const addUser = async newUser => {
   const password = bcrypt.hashSync(newUser.password, 12);
   await db('users').insert({
@@ -46,6 +50,7 @@ const deleteUser = async user_id => {
 module.exports = {
   getUsers,
   getUser,
+  getUserByEmail,
   addUser,
   updateUser,
   deleteUser

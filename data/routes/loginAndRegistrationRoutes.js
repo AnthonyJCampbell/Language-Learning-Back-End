@@ -10,26 +10,27 @@ const users = require('../helpers/userHelpers');
 
 // LOGIN
 router.post('/login', (req, res) => {
-  const { password } = req.body.password
+  const password = req.body.password
   const email_address = req.body.email_address;
   // const username = req.body.email_address;
   
   if ((!req.body.username && !req.body.email_address) || !req.body.password) {
     return res.status(404).json({message: "Please provide either a 'username' or a 'email_address' and a 'password'"})
   }
-
+  
   // Login with email is the default, since new sign-ups still have automatically-generated usernames
   // if (req.body.email_address && req.body.email_address.includes('@') && identifier.includes('.')) {
-    users.getUser(email_address)
+    users.getUserByEmail(email_address)
       .then(user => {
-        // SUCCESS CASE: CORRECT USERNAME & PASSWORD.
+      // SUCCESS CASE: CORRECT USERNAME & PASSWORD.
         if (user && bcrypt.compareSync(password, user.password)) {
           const token = tokenService(user);
           // RETURNS A MESSAGE, A TOKEN, AND THE USER OBJECT
-          res.status(200).json({
-            token,
-            user
-          });
+          console.log(token)
+          // res.status(200).json({
+          //   token,
+          //   user
+          // });
         }
         // FAIL: INCORRECT PASSWORD
         if (user && !bcrypt.compareSync(password, user.password)) {
