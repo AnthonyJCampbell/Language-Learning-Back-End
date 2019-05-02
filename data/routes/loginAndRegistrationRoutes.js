@@ -26,7 +26,6 @@ router.post('/login', (req, res) => {
         if (user && bcrypt.compareSync(password, user.password)) {
           const token = tokenService(user);
           // RETURNS A MESSAGE, A TOKEN, AND THE USER OBJECT
-          console.log(token)
           return res.status(200).json({
             token,
             user
@@ -47,8 +46,7 @@ router.post('/login', (req, res) => {
         return res.status(500).json({ message: "Something's gone wrong!"})
       })
 
-    } else {
-      console.log('im')
+  } else {
     // Login with Username
     users.getUser(username)
       .then(user => {
