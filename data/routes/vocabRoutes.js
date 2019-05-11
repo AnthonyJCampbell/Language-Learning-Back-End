@@ -22,9 +22,9 @@ router.get('/', (req, res) => {
   })
 })
 
-router.get('/:filter', (req, res) => {
-  const { filter } = req.params;
-  users.getPhrase(filter)
+router.get('/:phrase_id', (req, res) => {
+  const { phrase_id } = req.params;
+  users.getPhrase(phrase_id)
     .then(data => {
       if(!data) {
         res.status(404).json(error404)
