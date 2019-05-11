@@ -15,12 +15,12 @@ const error500 = {
 
 router.get('/', (req, res) => {
   answers.getAnswers()
-  .then(data => {
-    res.status(200).json(data)
-  })
-  .catch(()=> {
-    res.status(500).json(error500)
-  })
+    .then(data => {
+      res.status(200).json(data)
+    })
+    .catch(()=> {
+      res.status(500).json(error500)
+    })
 })
 
 router.get('/:filter', (req, res) => {

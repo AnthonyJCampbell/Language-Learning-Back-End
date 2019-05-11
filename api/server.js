@@ -9,7 +9,7 @@ const server = express();
 const loginAndRegistrationRoutes = require('./../data/routes/loginAndRegistrationRoutes')
 const userRoutes = require('./../data/routes/userRoutes')
 const sessionRoutes = require('./../data/routes/sessionRoutes')
-const vocabRoutes = require('./../data/routes/vocabRoutes')
+const phraseRoutes = require('./../data/routes/phraseRoutes')
 const answerRoutes = require('./../data/routes/answerRoutes')
 
 server.use(helmet())
@@ -21,7 +21,7 @@ server.use(cors())
 server.use('/api', loginAndRegistrationRoutes)
 server.use('/api/users', userRoutes)
 server.use('/api/sessions', sessionRoutes)
-server.use('/api/vocab', vocabRoutes)
+server.use('/api/phrases', phraseRoutes)
 server.use('/api/answers', answerRoutes)
 
 server.get('/', (req, res) => {
