@@ -12,23 +12,29 @@ module.exports = {
 // >>> Get X random phrases.
 // Takes in an array of ints as parameter.
 // Returns an array with phrases with phrase_ids matching to the ints passed in the param array
+// 
+// >>> Find all phrases where a particular field is NULL
+// i.e. pass phrase_esp_gender as params and returns an array with all user-objects where phrase_esp_gender === NULL
+// Useful for a admin dashboard
 
-function getPhrases() {
-  return db('phrases')
+
+async function getPhrases() {
+  return await db('phrases')
 }
 
-function getPhrase(phrase_id) {
-  return db('phrases').where(filter)
+async function getPhrase(phrase_id) {
+  return await db('phrases').where(phrase_id)
 }
 
-function addPhrase(phrase){
-  return db('phrases').insert(phrase)
+async function addPhrase(phrase){
+  await db('phrases').insert(phrase)
+  return getPhrases()
 }
 
-// function editPhrase(phrase_id) {
+// async function editPhrase(phrase_id) {
 //   return db('phrases')
 // }
 
-function deletePhrase(phrase_id) {
+async function deletePhrase(phrase_id) {
   return db('phrases').where({phrase_id}).del()
 }
