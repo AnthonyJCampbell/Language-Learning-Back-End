@@ -55,7 +55,7 @@ router.post('/', (req, res) => {
 })
 
 // Returns empty
-router.delete('/:id', (req, res) => {
+router.delete('/:answer_id', (req, res) => {
   const { answer_id } = req.params;
   answers.deleteAnswer(answer_id)
     .then(data => {

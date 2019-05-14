@@ -8,22 +8,24 @@ module.exports = {
   deleteAnswer
 }
 
-function getAnswers() {
-  return db('answers')
+async function getAnswers() {
+  return await db('answers')
 }
 
-function getAnswer(filter) {
-  return db('answers').where(filter)
+async function getAnswer(answer_id) {
+  return await db('answers').where({answer_id})
 }
 
-function addAnswer(answer){
-  return db('answers').insert(answer)
+async function addAnswer(answer){
+  await db('answers').insert(answer)
+  return getAnswers()
 }
 
 // function editAnswer(answer_id) {
 //   return db('answers')
 // }
 
-function deleteAnswer(answer_id) {
-  return db('answers').where({answer_id}).del()
+// Returns empty
+async function deleteAnswer(answer_id) {
+  return await db('answers').where({answer_id}).del()
 }

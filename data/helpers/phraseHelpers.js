@@ -8,22 +8,27 @@ module.exports = {
   deletePhrase
 }
 
+// To-do
+// >>> Get X random phrases.
+// Takes in an array of ints as parameter.
+// Returns an array with phrases with phrase_ids matching to the ints passed in the param array
+
 function getPhrases() {
-  return db('answers')
+  return db('phrases')
 }
 
-function getPhrase(filter) {
-  return db('answers').where(filter)
+function getPhrase(phrase_id) {
+  return db('phrases').where(filter)
 }
 
 function addPhrase(phrase){
-  return db('answers').insert(phrase)
+  return db('phrases').insert(phrase)
 }
 
 // function editPhrase(phrase_id) {
-//   return db('answers')
+//   return db('phrases')
 // }
 
 function deletePhrase(phrase_id) {
-  return db('answers').where({phrase_id}).del()
+  return db('phrases').where({phrase_id}).del()
 }
