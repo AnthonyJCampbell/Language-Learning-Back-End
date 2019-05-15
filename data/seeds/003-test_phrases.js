@@ -1,10 +1,10 @@
 
 exports.seed = function(knex, Promise) {
   // Deletes ALL existing entries
-  return knex('vocabulary').del()
+  return knex('phrases').del()
     .then(function () {
       // Inserts seed entries
-      return knex('vocabulary').insert([
+      return knex('phrases').insert([
         {
           phrase_id: 1,
           phrase_eng: 'car', 

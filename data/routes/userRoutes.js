@@ -14,12 +14,12 @@ const error500 = {
 
 router.get('/', (req, res) => {
   users.getUsers()
-  .then(data => {
-    res.status(200).json(data)
-  })
-  .catch(()=> {
-    res.status(500).json(error500)
-  })
+    .then(data => {
+      res.status(200).json(data)
+    })
+    .catch(()=> {
+      res.status(500).json(error500)
+    })
 })
 
 router.get('/:id', (req, res) => {
@@ -50,6 +50,24 @@ router.post('/', (req, res) => {
       .catch(() => {
         res.status(500).json(error500)
       })
+  }
+})
+
+router.put('/:user_id', (req, res) => {
+  const { user_id } = req.params;
+  const updates = req.body;
+  if (!updates.username && !update.email_address && !updates.password) {
+    res.status(404).json({
+      message: `Hey! Make sure to pass either a 'username', 'email_address', or 'password' if you want to change it!`
+    })
+  } else {
+    users.updateUser(user_id, updates)
+    .then(user => {
+      res.status(200).json(user);
+    })
+    .catch(() => {
+      res.status(500).json(error500);
+    });
   }
 })
 

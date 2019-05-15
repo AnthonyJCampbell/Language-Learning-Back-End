@@ -1,6 +1,6 @@
 
 exports.up = function(knex, Promise) {
-  return knex.schema.createTable('vocabulary', table => {
+  return knex.schema.createTable('phrases', table => {
     table.increments('phrase_id')
     table.string('phrase_eng')
       .notNullable()
@@ -12,5 +12,5 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema.dropTableIfExists('vocabulary');
+  return knex.schema.dropTableIfExists('phrases');
 };
