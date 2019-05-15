@@ -4,6 +4,10 @@ const helmet = require('helmet');
 
 const server = express();
 
+server.use(helmet())
+server.use(express.json());
+server.use(cors())
+
 // Import Routes
 // const routes = require('./location');
 const loginAndRegistrationRoutes = require('./../data/routes/loginAndRegistrationRoutes')
@@ -11,10 +15,6 @@ const userRoutes = require('./../data/routes/userRoutes')
 const sessionRoutes = require('./../data/routes/sessionRoutes')
 const phraseRoutes = require('./../data/routes/phraseRoutes')
 const answerRoutes = require('./../data/routes/answerRoutes')
-
-server.use(helmet())
-server.use(express.json());
-server.use(cors())
 
 // Routing && prefixing URLs
 // server.use('URL', _ROUTES_);
