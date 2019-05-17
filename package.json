@@ -18,6 +18,7 @@
   },
   "scripts": {
     "start": "node index.js",
+    "postinstall": "knex migrate:latest",
     "server": "nodemon",
     "migrate": "knex migrate:latest",
     "runseeds": "knex seed:run",
