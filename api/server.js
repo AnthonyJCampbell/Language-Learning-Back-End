@@ -10,19 +10,19 @@ server.use(cors())
 
 // Import Routes
 // const routes = require('./location');
-const loginAndRegistrationRoutes = require('./../data/routes/loginAndRegistrationRoutes')
-const userRoutes = require('./../data/routes/userRoutes')
-const sessionRoutes = require('./../data/routes/sessionRoutes')
-const phraseRoutes = require('./../data/routes/phraseRoutes')
-const answerRoutes = require('./../data/routes/answerRoutes')
+// const loginAndRegistrationRoutes = require('./../data/routes/loginAndRegistrationRoutes')
+// const userRoutes = require('./../data/routes/userRoutes')
+// const sessionRoutes = require('./../data/routes/sessionRoutes')
+// const phraseRoutes = require('./../data/routes/phraseRoutes')
+// const answerRoutes = require('./../data/routes/answerRoutes')
 
 // Routing && prefixing URLs
 // server.use('URL', _ROUTES_);
-server.use('/api', loginAndRegistrationRoutes)
-server.use('/api/users', userRoutes)
-server.use('/api/sessions', sessionRoutes)
-server.use('/api/phrases', phraseRoutes)
-server.use('/api/answers', answerRoutes)
+// server.use('/api', loginAndRegistrationRoutes)
+// server.use('/api/users', userRoutes)
+// server.use('/api/sessions', sessionRoutes)
+// server.use('/api/phrases', phraseRoutes)
+// server.use('/api/answers', answerRoutes)
 
 server.get('/', (req, res) => {
   res.status(200).json({ "message": "Server's alive!"})
