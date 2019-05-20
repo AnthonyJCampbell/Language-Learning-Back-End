@@ -8,22 +8,22 @@ module.exports = {
   endSession
 }
 
-function getSessions() {
-  return db('sessions')
+async function getSessions() {
+  return await db('sessions')
 }
 
-function getSessionBySessionId(session_id) {
-  return db('sessions').where({session_id})
+async function getSessionBySessionId(session_id) {
+  return await db('sessions').where({session_id})
 }
 
-function getSessionsByUserId(user_id) {
-  return db('sessions').where({user_id})
+async function getSessionsByUserId(user_id) {
+  return await db('sessions').where({user_id})
 }
 
-function startSession(user_id){
-  return db('sessions').insert(user_id)
+async function startSession(user_id){
+  return await db('sessions')
 }
 
-function endSession() {
-  return db('sessions') 
+async function endSession() {
+  return await db('sessions') 
 }
