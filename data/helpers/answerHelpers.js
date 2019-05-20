@@ -17,12 +17,13 @@ async function getAnswer(answer_id) {
 }
 
 async function addAnswer(answer){
-  await db('answers').insert(answer, 'answer_id')
-  return await db('answers').where({ answer_id })
+  await db('answers').insert(answer)
+  return db('answers').where({ answer_esp: answer.answer_esp})
 }
 
-function editAnswer(answer_id) {
-  return db('answers')
+async function editAnswer(answer_id, updates) {
+  await db('answers').where({answer_id}).update(updates)
+  return await db('answers').where({answer_id}).first();
 }
 
 // Returns empty

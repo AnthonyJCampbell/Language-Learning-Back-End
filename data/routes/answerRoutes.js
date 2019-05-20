@@ -42,14 +42,30 @@ router.get('/:answer_id', (req, res) => {
 router.post('/', (req, res) => {
   const answer = req.body;
   if (!answer) {
-    res.status(404).json(error404)
+    return res.status(404).json(error404)
   } else {
     answers.addAnswer(answer)
       .then(data => {
-        res.status(201).json(data)
+        return res.status(201).json(data)
       })
       .catch(() => {
-        res.status(500).json(error500)
+        return res.status(500).json(error500)
+      })
+  }
+})
+
+router.put('/:answer_id', (req, res) => {
+  const updates = req.body;
+  const { answer_id } = req.params;
+  if (!updates) {
+    return res.status(404).json(error404)
+  } else {
+    answers.editAnswer(answer_id, updates)
+      .then(data => {
+        return res.status(200).json(data)
+      })
+      .catch(() => {
+        return res.status(500).json(error500)
       })
   }
 })
