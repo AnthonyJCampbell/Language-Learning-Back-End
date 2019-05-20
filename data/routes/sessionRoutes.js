@@ -24,7 +24,7 @@ router.get('/', (req, res) => {
 
 router.get('/:session_id', (req, res) => {
   const { session_id } = req.params;
-  sessions.getSession(session_id)
+  sessions.getSessionBySessionId(session_id)
     .then(data => {
       if(!data) {
         return res.status(404).json(error404)

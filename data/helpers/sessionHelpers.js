@@ -2,7 +2,7 @@ const db = require('../utilities/dbConfig');
 
 module.exports = {
   getSessions,
-  getSession,
+  getSessionBySessionId,
   startSession,
   endSession
 }
@@ -11,7 +11,7 @@ function getSessions() {
   return db('sessions')
 }
 
-function getSession(session_id) {
+function getSessionBySessionId(session_id) {
   return db('sessions').where({session_id})
 }
 
