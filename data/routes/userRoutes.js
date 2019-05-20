@@ -15,10 +15,10 @@ const error500 = {
 router.get('/', (req, res) => {
   users.getUsers()
     .then(data => {
-      res.status(200).json(data)
+      return res.status(200).json(data)
     })
     .catch(()=> {
-      res.status(500).json(error500)
+      return res.status(500).json(error500)
     })
 })
 
@@ -27,13 +27,13 @@ router.get('/:user_id', (req, res) => {
   users.getUser(user_id)
     .then(data => {
       if(!data) {
-        res.status(404).json(error404)
+        return res.status(404).json(error404)
       } else {
-        res.status(200).json(data);
+        return res.status(200).json(data);
       }
     })
     .catch(error => {
-      res.status(500).json(error)
+      return res.status(500).json(error)
     })
 })
 
@@ -41,14 +41,14 @@ router.get('/:user_id', (req, res) => {
 router.post('/', (req, res) => {
   const user = req.body;
   if (!user) {
-    res.status(404).json(error404)
+    return res.status(404).json(error404)
   } else {
     users.addUser(user)
       .then(data => {
-        res.status(201).json(data)
+        return res.status(201).json(data)
       })
       .catch(() => {
-        res.status(500).json(error500)
+        return res.status(500).json(error500)
       })
   }
 })
@@ -57,16 +57,16 @@ router.put('/:user_id', (req, res) => {
   const { user_id } = req.params;
   const updates = req.body;
   if (!updates.username && !updates.email_address && !updates.password) {
-    res.status(404).json({
+    return res.status(404).json({
       message: `Hey! Make sure to pass either a 'username', 'email_address', or 'password' if you want to change it!`
     })
   } else {
     users.updateUser(user_id, updates)
     .then(user => {
-      res.status(200).json(user);
+      return res.status(200).json(user);
     })
     .catch(() => {
-      res.status(500).json(error500);
+      return res.status(500).json(error500);
     });
   }
 })
@@ -77,15 +77,15 @@ router.delete('/:filter', (req, res) => {
   users.deleteUser(filter)
     .then(data => {
       if (!data) {
-        res.status(404).json(error404)
+        return res.status(404).json(error404)
       } else {
-        res.status(204).json({
+        return res.status(204).json({
           message: `Successfully deleted user`
         })
       }
     })
     .catch(() => {
-      res.status(500).json(error500)
+      return res.status(500).json(error500)
     })
 })
 
