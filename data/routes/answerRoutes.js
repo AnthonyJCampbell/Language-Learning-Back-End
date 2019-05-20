@@ -23,9 +23,9 @@ router.get('/', (req, res) => {
     })
 })
 
-router.get('/:filter', (req, res) => {
-  const { filter } = req.params;
-  answers.getAnswer(filter)
+router.get('/:answer_id', (req, res) => {
+  const { answer_id } = req.params;
+  answers.getAnswer(answer_id)
     .then(data => {
       if(!data) {
         res.status(404).json(error404)

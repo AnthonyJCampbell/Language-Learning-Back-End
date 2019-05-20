@@ -13,12 +13,12 @@ async function getAnswers() {
 }
 
 async function getAnswer(answer_id) {
-  return await db('answers').where({answer_id})
+  return await db('answers').where({answer_id}).first()
 }
 
 async function addAnswer(answer){
-  await db('answers').insert(answer)
-  return getAnswers()
+  await db('answers').insert(answer, 'answer_id')
+  return await db('answers').where({ answer_id }).first()
 }
 
 // function editAnswer(answer_id) {
