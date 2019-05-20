@@ -41,22 +41,34 @@ router.get('/:phrase_id', (req, res) => {
 router.post('/', (req, res) => {
   const user = req.body;
   if (!user) {
-    return res.status(404).json(error404)
+    return res.status(404).json(error404);
   } else {
     phrases.addPhrase(user)
       .then(data => {
-        return res.status(201).json(data)
+        return res.status(201).json(data);
       })
       .catch(() => {
-        return res.status(500).json(error500)
-      })
-  }
+        return res.status(500).json(error500);
+      });
+  };
+});
+
+router.put('/:phrase_id', (req, res) => {
+  const { phrase_id } = req.params;
+  const updates = req.body;
+  phrases.editPhrase(phrase_id, updates)
+    .then(data => {
+      return res.status(200).json(data)
+    })
+    .catch(() => {
+      return res.status(500).json(error500)
+    });
 })
 
 // Returns empty
-router.delete('/:filter', (req, res) => {
-  const { filter } = req.params;
-  phrases.deletePhrase(filter)
+router.delete('/:phrase_id', (req, res) => {
+  const { phrase_id } = req.params;
+  phrases.deletePhrase(phrase_id)
     .then(data => {
       if (!data) {
         return res.status(404).json(error404)
