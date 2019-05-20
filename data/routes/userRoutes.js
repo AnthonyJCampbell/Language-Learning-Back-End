@@ -22,9 +22,9 @@ router.get('/', (req, res) => {
     })
 })
 
-router.get('/:id', (req, res) => {
-  const { filter } = req.params;
-  users.getUser(filter)
+router.get('/:user_id', (req, res) => {
+  const { user_id } = req.params;
+  users.getUser(user_id)
     .then(data => {
       if(!data) {
         res.status(404).json(error404)
@@ -56,7 +56,7 @@ router.post('/', (req, res) => {
 router.put('/:user_id', (req, res) => {
   const { user_id } = req.params;
   const updates = req.body;
-  if (!updates.username && !update.email_address && !updates.password) {
+  if (!updates.username && !updates.email_address && !updates.password) {
     res.status(404).json({
       message: `Hey! Make sure to pass either a 'username', 'email_address', or 'password' if you want to change it!`
     })

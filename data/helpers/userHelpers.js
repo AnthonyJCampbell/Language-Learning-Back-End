@@ -5,9 +5,9 @@ const getUsers = async => {
   return db('users')
 }
 
-const getUser = async filter => {
+const getUser = async user_id => {
   return db('users')
-    .where({filter})
+    .where({ user_id })
     .first()
 }
 
@@ -28,10 +28,10 @@ const addUser = async newUser => {
   
 const updateUser = async (user_id, updates) => {
   if (updates.password) {
-    const password = bcrypt.hashSync(updates.password, 12);
+    updates.password = bcrypt.hashSync(updates.password, 12);
     await db('users')
       .where({ user_id })
-      .update({ ...updates, password });
+      .update({ ...updates });
     return await getUser(user_id)
   } else {
     await db('users')
