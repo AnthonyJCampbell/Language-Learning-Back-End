@@ -24,13 +24,14 @@ async function getXPhrases(arrayOfIntegers) {
 }
 
 async function getPhrase(phrase_id) {
-  return await db('phrases').where(phrase_id)
+  return await db('phrases').where({phrase_id})
 }
 
 
 async function addPhrase(phrase){
+  const phrase_eng = phrase.phrase_eng
   await db('phrases').insert(phrase)
-  return getPhrases()
+  return await db('phrases').where({phrase_eng})
 }
 
 async function editPhrase(phrase_id, updates) {

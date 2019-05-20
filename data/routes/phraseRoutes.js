@@ -61,7 +61,7 @@ router.delete('/:filter', (req, res) => {
       if (!data) {
         res.status(404).json(error404)
       } else {
-        res.status(204).json({
+        return res.status(200).json({
           message: `Successfully deleted phrase`
         })
       }
