@@ -16,10 +16,10 @@ const error500 = {
 router.get('/', (req, res) => {
   answers.getAnswers()
     .then(data => {
-      res.status(200).json(data)
+      return res.status(200).json(data)
     })
     .catch(()=> {
-      res.status(500).json(error500)
+      return res.status(500).json(error500)
     })
 })
 
@@ -28,13 +28,13 @@ router.get('/:answer_id', (req, res) => {
   answers.getAnswer(answer_id)
     .then(data => {
       if(!data) {
-        res.status(404).json(error404)
+        return res.status(404).json(error404)
       } else {
-        res.status(200).json(data);
+        return res.status(200).json(data);
       }
     })
     .catch(error => {
-      res.status(500).json(error)
+      return res.status(500).json(error)
     })
 })
 
@@ -76,15 +76,15 @@ router.delete('/:answer_id', (req, res) => {
   answers.deleteAnswer(answer_id)
     .then(data => {
       if (!data) {
-        res.status(404).json(error404)
+        return res.status(404).json(error404)
       } else {
-        res.status(200).json({
+        return res.status(200).json({
           message: `Successfully deleted answer`
         })
       }
     })
     .catch(() => {
-      res.status(500).json(error500)
+      return res.status(500).json(error500)
     })
 })
 
