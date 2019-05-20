@@ -37,6 +37,21 @@ router.get('/:session_id', (req, res) => {
     })
 })
 
+router.get('/user/:user_id', (req, res) => {
+  const { user_id } = req.params;
+  sessions.getSessionsByUserId(user_id)
+    .then(data => {
+      if(!data) {
+        return res.status(404).json(error404)
+      } else {
+        return res.status(200).json(data);
+      }
+    })
+    .catch(error => {
+      return res.status(500).json(error)
+    })
+})
+
 // RETURNS ID of new session
 // Start session
 router.post('/start', (req, res) => {
