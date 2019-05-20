@@ -18,7 +18,7 @@ async function getAnswer(answer_id) {
 
 async function addAnswer(answer){
   await db('answers').insert(answer, 'answer_id')
-  return await db('answers').where({ answer_id }).first()
+  return await db('answers').where({ answer_id })
 }
 
 // function editAnswer(answer_id) {

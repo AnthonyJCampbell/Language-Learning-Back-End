@@ -62,7 +62,7 @@ router.delete('/:answer_id', (req, res) => {
       if (!data) {
         res.status(404).json(error404)
       } else {
-        res.status(204).json({
+        res.status(200).json({
           message: `Successfully deleted answer`
         })
       }
