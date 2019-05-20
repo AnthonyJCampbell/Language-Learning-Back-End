@@ -5,7 +5,7 @@ module.exports = {
   getXPhrases,
   getPhrase,
   addPhrase,
-  // editPhrase,
+  editPhrase,
   deletePhrase
 }
 
