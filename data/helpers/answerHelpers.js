@@ -4,7 +4,7 @@ module.exports = {
   getAnswers,
   getAnswer,
   addAnswer,
-  // editAnswer,
+  editAnswer,
   deleteAnswer
 }
 
@@ -21,9 +21,9 @@ async function addAnswer(answer){
   return await db('answers').where({ answer_id })
 }
 
-// function editAnswer(answer_id) {
-//   return db('answers')
-// }
+function editAnswer(answer_id) {
+  return db('answers')
+}
 
 // Returns empty
 async function deleteAnswer(answer_id) {
