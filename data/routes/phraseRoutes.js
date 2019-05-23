@@ -40,7 +40,7 @@ router.get('/:phrase_id', (req, res) => {
 router.get('/random/:numberOfPhrases', async(req, res) => {
   const { numberOfPhrases } = req.params;
 
-  phrases.getXPhrases(numberOfPhrases)
+  phrases.getRandomPhrase(numberOfPhrases)
     .then(data => {
       return res.status(200).json(data)
     })

@@ -2,8 +2,8 @@ const db = require('../utilities/dbConfig');
 
 module.exports = {
   getPhrases,
-  getXPhrases,
   getPhrase,
+  getRandomPhrase,
   addPhrase,
   editPhrase,
   deletePhrase
@@ -17,15 +17,14 @@ async function getPhrases() {
   return await db('phrases')
 }
 
-async function getXPhrases(numberOfPhrases) {
-  return await db('phrases').orderByRaw('RANDOM()').limit(numberOfPhrases)
-  
-}
-
 async function getPhrase(phrase_id) {
   return await db('phrases').where({phrase_id})
 }
 
+async function getRandomPhrase(numberOfPhrases) {
+  return await db('phrases').orderByRaw('RANDOM()').limit(numberOfPhrases)
+  
+}
 
 async function addPhrase(phrase){
   const phrase_eng = phrase.phrase_eng
