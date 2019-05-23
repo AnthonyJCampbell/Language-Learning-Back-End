@@ -5,7 +5,7 @@ module.exports = {
   development: {
     client: 'sqlite3',
     connection: {
-      filename: './data/db.db3'
+      filename: './data/neolangDevelopment.db3'
     },
     useNullAsDefault: true,
     migrations: {
@@ -19,7 +19,7 @@ module.exports = {
   testing: {
     client: 'sqlite3',
     connection: {
-      filename: './data/test.db3'
+      filename: './data/neolangTest.db3'
     },
     useNullAsDefault: true,
     migrations: {
