@@ -23,7 +23,6 @@ async function getPhrase(phrase_id) {
 
 async function getRandomPhrase(numberOfPhrases) {
   return await db('phrases').orderByRaw('RANDOM()').limit(numberOfPhrases)
-  
 }
 
 async function addPhrase(phrase){

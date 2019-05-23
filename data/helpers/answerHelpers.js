@@ -16,6 +16,10 @@ async function getAnswer(answer_id) {
   return await db('answers').where({answer_id}).first()
 }
 
+async function getRandomAnswer(numberOfAnswers) {
+  return await db('answers').orderByRaw('RANDOM()').limit(numberOfAnswers)
+}
+
 async function addAnswer(answer){
   await db('answers').insert(answer)
   return db('answers').where({ answer_esp: answer.answer_esp})
