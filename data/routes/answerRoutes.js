@@ -38,6 +38,19 @@ router.get('/:answer_id', (req, res) => {
     })
 })
 
+router.get('/random/:numberOfAnswers', async(req, res) => {
+  const { numberOfAnswers } = req.params;
+
+  answers.getRandomAnswer(numberOfAnswers)
+    .then(data => {
+      return res.status(200).json(data)
+    })
+    .catch(error => {
+      return res.status(500).json(error500)
+    })
+})
+
+
 // RETURNS ID of new entry
 router.post('/', (req, res) => {
   const answer = req.body;

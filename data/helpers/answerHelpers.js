@@ -3,6 +3,7 @@ const db = require('../utilities/dbConfig');
 module.exports = {
   getAnswers,
   getAnswer,
+  getRandomAnswer,
   addAnswer,
   editAnswer,
   deleteAnswer
