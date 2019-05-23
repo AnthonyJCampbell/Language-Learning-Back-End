@@ -37,6 +37,18 @@ router.get('/:phrase_id', (req, res) => {
     })
 })
 
+router.get('/random/:numberOfPhrases', async(req, res) => {
+  const { numberOfPhrases } = req.params;
+
+  phrases.getXPhrases(numberOfPhrases)
+    .then(data => {
+      return res.status(200).json(data)
+    })
+    .catch(error => {
+      return res.status(500).json(error500)
+    })
+})
+
 // RETURNS ID of new entry
 router.post('/', (req, res) => {
   const user = req.body;

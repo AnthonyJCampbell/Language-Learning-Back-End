@@ -17,10 +17,9 @@ async function getPhrases() {
   return await db('phrases')
 }
 
-async function getXPhrases(arrayOfIntegers) {
-  return arrayOfIntegers.map(async int => {
-    await getPhrase(int)
-  })
+async function getXPhrases(numberOfPhrases) {
+  return await db('phrases').orderByRaw('RANDOM()').limit(numberOfPhrases)
+  
 }
 
 async function getPhrase(phrase_id) {
