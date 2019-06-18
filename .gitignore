@@ -85,3 +85,5 @@ typings/
 
 # SQLITE Files
 *.sqlite3
+
+api/db.js
