@@ -1,4 +1,4 @@
-const db = require('./../dbConfig');
+const db = console.log()
 const users = require('./userHelpers')
 
 module.exports = {

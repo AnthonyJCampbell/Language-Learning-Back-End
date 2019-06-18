@@ -1,4 +1,4 @@
-const db = require('../utilities/dbConfig');
+const db = console.log()
 
 module.exports = {
   getSessions,
