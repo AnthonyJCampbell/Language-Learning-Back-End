@@ -165,21 +165,16 @@ router.post('/many', (req, res) => {
     })
 })
 
+// editFlashcard
+router.put('/:id', (req, res) => {
+  const { id } = req.params;
+
+})
+
+// deleteFlashcard
 router.delete('/:id', (req, res) => {
   const { id } = req.params;
-  // phrases.deletePhrase(id)
-  // .then(data => {
-  //   if (!data) {
-  //     res.status(404).json(error404)
-  //   } else {
-  //     res.status(204).json({
-  //       message: `Successfully deleted phrase`
-  //     })
-  //   }
-  // })
-  // .catch(() => {
-  //   res.status(500).json(error500)
-  // })
+  
 })
 
 const error404 = {
