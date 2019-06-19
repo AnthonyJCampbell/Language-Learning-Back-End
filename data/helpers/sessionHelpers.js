@@ -1,17 +1,17 @@
 
-function getSessions() {
+const getSessions = () => {
   // return db('sessions')
 }
 
-function getSession(filter) {
+const getSession = (filter) => {
   // return db('sessions').where(filter)
 }
 
-function startSession(user_id){
+const startSession = (user_id) => {
   // return db('sessions').insert(user_id)
 }
 
-function endSession() {
+const endSession = () => {
   // return db('sessions') 
 }
 
