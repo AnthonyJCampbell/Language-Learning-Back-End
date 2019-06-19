@@ -37,7 +37,6 @@ router.get('/:id', (req, res) => {
       flashcardArray.push(card)
     })
     .then(() => {
-      console.log(flashcardArray)
       if(flashcardArray.length < 1) {
         res.status(404).json(error404)
       } else {

@@ -28,6 +28,28 @@ router.get('/', (req, res) => {
 })
 
 // Find user by id.
+router.get('/:id', (req, res) => {
+  const { id } = req.params
+  const userArray = []
+  db.getDb()
+    .db()
+    .collection("users")
+    .find({_id: new mongodb.ObjectId(id)})
+    .limit(1)
+    .forEach(user => {
+      userArray.push(user)
+    })
+    .then(() => {
+      if(userArray.length < 1) {
+        res.status(404).json(error404)
+      } else {
+        res.status(200).json(userArray);
+      }
+    })
+    .catch(error => {
+      res.status(500).json(error)
+    })
+})
 
 // Find user by username
 router.get('/:username', (req, res) => {
@@ -42,7 +64,6 @@ router.get('/:username', (req, res) => {
       userArray.push(user)
     })
     .then(() => {
-      console.log(userArray)
       if(userArray.length < 1) {
         res.status(404).json(error404)
       } else {
