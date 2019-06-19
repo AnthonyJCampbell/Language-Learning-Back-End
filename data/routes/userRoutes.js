@@ -104,6 +104,7 @@ router.post('/', (req, res) => {
     email: email.toLowerCase(),
     password: password
   }
+  
   db.getDb()
     .db()
     .collection("users")

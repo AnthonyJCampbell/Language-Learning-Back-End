@@ -1,12 +1,13 @@
 const express = require('express');
-const bcrypt = require('bcryptjs');
 const tokenService = require('../utilities/token-generator');
+const bcrypt = require('bcryptjs');
 
 const router = express.Router();
 router.use(express.json());
 
+const db = require('../../api/db')
+
 const users = require('../helpers/userHelpers');
-// const sessions = require('../helpers/sessionHelpers');
 
 // LOGIN
 router.post('/login', (req, res) => {
@@ -88,29 +89,49 @@ router.post('/login', (req, res) => {
 // Both username, email_address are required to be unique in the DB.
 // Returns a token and a user object
 router.post('/register', (req, res) => {
-  const { email_address, password } = req.body;
-  const username = `user-${email_address}`
+  let { name, email, password } = req.body;
   
-  if (!username || !email_address || !password) {
-    return res.status(404).json({message: "Make sure to pass a 'username', 'email_address', and 'password"})
+  if (!name || !email || !password) {
+    return res.status(400).json({
+      message: "Make sure to provide a name, email, and password!"
+    })
   }
-  if (!email_address.includes('@') || !email_address.includes('.')) {
-    return res.status(404).json({message: "Make sure to pass a valid email address!"})
+
+  if (!email.includes('@') || !email.includes('.') || email.length < 10) {
+    return res.status(400).json({
+      message: "Make sure to pass a valid email address!"
+    })
   }
-  // >>> Check email address for special characters that we don't use in the DB
-  
-  users.addUser({"email_address": email_address, "password": password, "username": username})
+  // Disabled during development
+  // if (password.length < 8 || password == password.toLowerCase()) {
+  //   console.log(password.length)
+  //   return res.status(400).json({
+  //     message: "Make sure your password is at least 8 characters long and contains at least one uppercase letter!"
+  //   })
+  // }
+
+  password = bcrypt.hashSync(password, 12)
+  const newUser = {
+    name: name.toLowerCase(),
+    email: email.toLowerCase(),
+    password: password.toString()
+  }
+
+  db.getDb()
+    .db()
+    .collection("users")
+    .insertOne(newUser)
     .then(user => {
       const token = tokenService(user);
-      return res.status(200).json({
+      // Output of newUser includes "_id"
+      return res.status(201).json({
+        message: "Success!",
         token,
-        user
+        user: newUser
       })
     })
     .catch(() => {
-      return res.status(500).json({
-        message: "Whoops!"
-      })
+      return res.status(500).json(error500)
     })
 })
 
