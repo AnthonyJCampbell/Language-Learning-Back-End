@@ -33,7 +33,9 @@ router.post('/login', (req, res) => {
         }
         // FAIL: INCORRECT PASSWORD
         if (user && !bcrypt.compareSync(password, user.password)) {
-          return res.status(404).json({ message: 'Invalid password!' });
+          return res.status(404).json({ 
+            message: 'Invalid password!' 
+          });
         }
         // FAIL: INCORRECT USERNAME (DEFAULT)
         else {
@@ -43,7 +45,9 @@ router.post('/login', (req, res) => {
         }
       })
       .catch(() => {
-        return res.status(500).json({ message: "Something's gone wrong!"})
+        return res.status(500).json({ 
+          message: "Something's gone wrong!"
+        })
       })
 
   } else {
@@ -61,7 +65,9 @@ router.post('/login', (req, res) => {
         }
         // FAIL: INCORRECT PASSWORD
         if (user && !bcrypt.compareSync(password, user.password)) {
-          return res.status(404).json({ message: 'Invalid password!' });
+          return res.status(404).json({ 
+            message: 'Invalid password!' 
+          });
         }
         // FAIL: INCORRECT USERNAME (DEFAULT)
         else {
@@ -71,7 +77,9 @@ router.post('/login', (req, res) => {
         }
       })
       .catch(() => {
-        return res.status(500).json({ message: "Something's gone wrong!"})
+        return res.status(500).json({ 
+          message: "Something's gone wrong!"
+        })
       })
   }
 })
@@ -83,8 +91,12 @@ router.post('/register', (req, res) => {
   const { email_address, password } = req.body;
   const username = `user-${email_address}`
   
-  if (!username || !email_address || !password) {return res.status(404).json({message: "Make sure to pass a 'username', 'email_address', and 'password"})}
-  if (!email_address.includes('@') || !email_address.includes('.')) {return res.status(404).json({message: "Make sure to pass a valid email address!"})}
+  if (!username || !email_address || !password) {
+    return res.status(404).json({message: "Make sure to pass a 'username', 'email_address', and 'password"})
+  }
+  if (!email_address.includes('@') || !email_address.includes('.')) {
+    return res.status(404).json({message: "Make sure to pass a valid email address!"})
+  }
   // >>> Check email address for special characters that we don't use in the DB
   
   users.addUser({"email_address": email_address, "password": password, "username": username})
@@ -96,7 +108,9 @@ router.post('/register', (req, res) => {
       })
     })
     .catch(() => {
-      return res.status(500).json({message: "Whoops!"})
+      return res.status(500).json({
+        message: "Whoops!"
+      })
     })
 })
 

@@ -23,8 +23,8 @@ router.get('/', (req, res) => {
 })
 
 router.get('/:id', (req, res) => {
-  const { filter } = req.params;
-  users.getUser(filter)
+  const { id } = req.params;
+  users.getUser(id)
     .then(data => {
       if(!data) {
         res.status(404).json(error404)

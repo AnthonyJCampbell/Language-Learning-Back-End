@@ -54,9 +54,9 @@ router.post('/', (req, res) => {
 })
 
 // Returns empty
-router.delete('/:filter', (req, res) => {
-  const { filter } = req.params;
-  phrases.deletePhrase(filter)
+router.delete('/:id', (req, res) => {
+  const { id } = req.params;
+  phrases.deletePhrase(id)
     .then(data => {
       if (!data) {
         res.status(404).json(error404)
