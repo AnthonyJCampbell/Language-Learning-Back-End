@@ -130,10 +130,10 @@ router.put('/:user_id', (req, res) => {
   } else {
     users.updateUser(user_id, updates)
     .then(user => {
-      res.status(200).json(user);
+      return res.status(200).json(user);
     })
     .catch(() => {
-      res.status(500).json(error500);
+      return res.status(500).json(error500);
     });
   }
 })
@@ -144,9 +144,9 @@ router.delete('/:filter', (req, res) => {
   users.deleteUser(filter)
   .then(data => {
     if (!data) {
-      res.status(404).json(error404)
+      return res.status(404).json(error404)
     } else {
-      res.status(204).json({
+      return res.status(204).json({
         message: `Successfully deleted user`
         })
       }

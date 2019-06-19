@@ -135,17 +135,38 @@ router.post('/', (req, res) => {
 // InsertManyFlashcards
 router.post('/many', (req, res) => {
   const flashcards = req.body;
-  // if (!flashcards) {
-  //   res.status(404).json(error404)
-  // } else {
-  //   phrases.addPhrase(user)
-  //   .then(data => {
-  //     res.status(201).json(data)
-  //   })
-  //   .catch(() => {
-  //     res.status(500).json(error500)
-  //   })
-  // }
+  const newFlashcards = []
+  // Assuming body is an array of objects.
+  // forEach over the array, checking for en, esp and keywords
+  // push en, esp, and keywords to newFlashCards.
+  // Then insert that to mongo
+  flashcards.forEach((card, idx) => {
+    if (!card.englishPhrase || !card.spanishPhrase || !card.keywords) {
+      return res.status(400).json({message: `Something is wrong with entry no. ${idx + 1}`})
+    }
+    console.log(card.keywords.english)
+    newFlashcards.push({
+      englishPhrase: card.englishPhrase,
+      spanishPhrase: card.spanishPhrase,
+      keywords: {...card.keywords},
+    })
+  })
+  db.getDb()
+    .db()
+    .collection("flashcards")
+    .insertMany(newFlashcards)
+    .then(() => {
+      // Output of newFlashCards includes "_id"
+      return res.status(201).json({
+        message: "Success!",
+        flashcards: newFlashcards
+      })
+    })
+    .catch(() => {
+      return res.status(500).json(error500)
+    })
+  
+  
 })
 
 router.delete('/:id', (req, res) => {
