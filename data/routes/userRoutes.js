@@ -55,31 +55,42 @@ router.get('/:username', (req, res) => {
 // RETURNS ID of new entry
 router.post('/', (req, res) => {
   let { name, email, password } = req.body;
+  
   if (!name || !email || !password) {
-    return res.status(401).json({
+    return res.status(400).json({
       message: "Make sure to provide a name, email, and password!"
     })
   }
-  password = bcrypt.hashSync(password, 12)
 
+  if (!email.includes('@') || !email.includes('.') || email.length < 10) {
+    return res.status(400).json({
+      message: "Make sure to pass a valid email address!"
+    })
+  }
+  // Disabled during development
+  // if (password.length < 8) {
+  //   return res.status(400).json({
+  //     message: "Make sure your password is at least 8 characters long!"
+  //   })
+  // }
+
+  password = bcrypt.hashSync(password, 12)
   const newUser = {
     name: name.toLowerCase(),
     email: email.toLowerCase(),
     password: password
   }
   db.getDb().db().collection("users").insertOne(newUser)
-    // const user = req.body;
-    // if (!user) {
-      //   res.status(404).json(error404)
-      // } else {
-        //   users.addUser(user)
-        //     .then(data => {
-  //       res.status(201).json(data)
-  //     })
-  //     .catch(() => {
-    //       res.status(500).json(error500)
-  //     })
-  // }
+    .then(() => {
+      // Output of newUser includes "_id"
+      return res.status(201).json({
+        message: "Success!",
+        user: newUser
+      })
+    })
+    .catch(() => {
+      return res.status(500).json(error500)
+    })
 })
 
 router.put('/:user_id', (req, res) => {
