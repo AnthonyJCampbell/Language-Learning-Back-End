@@ -91,12 +91,12 @@ router.post('/', (req, res) => {
     })
   }
   // Disabled during development
-  if (password.length < 8 || password == password.toLowerCase()) {
-    console.log(password.length)
-    return res.status(400).json({
-      message: "Make sure your password is at least 8 characters long and contains at least one uppercase letter!"
-    })
-  }
+  // if (password.length < 8 || password == password.toLowerCase()) {
+  //   console.log(password.length)
+  //   return res.status(400).json({
+  //     message: "Make sure your password is at least 8 characters long and contains at least one uppercase letter!"
+  //   })
+  // }
 
   password = bcrypt.hashSync(password, 12)
   const newUser = {
@@ -104,7 +104,7 @@ router.post('/', (req, res) => {
     email: email.toLowerCase(),
     password: password
   }
-  
+
   db.getDb()
     .db()
     .collection("users")
