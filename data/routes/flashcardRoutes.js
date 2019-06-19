@@ -18,16 +18,71 @@ router.get('/', (req, res) => {
       flashcardArray.push(card)
     })
     .then(() => {
-      res.status(200).json(flashcardArray)
+      return res.status(200).json(flashcardArray)
     })
     .catch(()=> {
-      res.status(500).json(error500)
+      return res.status(500).json(error500)
+    })
+})
+
+// getXNumberOfFlashcards
+router.get('/random/:number', (req, res) => {
+  const numberOfFlashcards = req.params.number;
+  const flashcardArray = []
+  console.log(numberOfFlashcards)
+  db.getDb()
+    .db()
+    .collection("flashcards")
+    .aggregate([
+      {$sample: {size: mongodb.Decimal128.fromString(numberOfFlashcards)}}
+    ])
+    .forEach(card => {
+      flashcardArray.push(card);
+    })
+    .then(() => {
+      if(flashcardArray.length < 1) {
+        return res.status(404).json({
+          message: "There was an error that returned 0 documents. Are you sure you're looking in the right collection?"
+        })
+      } else {
+        return res.status(200).json(flashcardArray);
+      }
+    })
+    .catch(error => {
+      return res.status(500).json(error)
+    })
+})
+
+// getRandomFlashcard
+router.get('/random', (req, res) => {
+  const flashcardArray = []
+  db.getDb()
+    .db()
+    .collection("flashcards")
+    .aggregate([{$sample: {size: 1}}])
+    .forEach(card => {
+      flashcardArray.push(card);
+    })
+    .then(() => {
+      if(flashcardArray.length < 1) {
+        return res.status(404).json(error404)
+      } else {
+        return res.status(200).json(flashcardArray);
+      }
+    })
+    .catch(error => {
+      return res.status(500).json(error)
     })
 })
 
 // getFlashcardById
 router.get('/:id', (req, res) => {
   const { id } = req.params;
+  if (id.length !== 24) {
+    return res.status(400).json({
+      message: "Make sure you're passing a correct _id!"
+    })
+  }
   const flashcardArray = []
   db.getDb()
     .db()
@@ -38,30 +93,14 @@ router.get('/:id', (req, res) => {
     })
     .then(() => {
       if(flashcardArray.length < 1) {
-        res.status(404).json(error404)
+        return res.status(404).json(error404)
       } else {
-        res.status(200).json(flashcardArray);
+        return res.status(200).json(flashcardArray);
       }
     })
     .catch(error => {
-      res.status(500).json(error)
+      return res.status(500).json(error)
     })
-})
-
-// getXNumberOfFlashcards
-router.get('/many/:number', (req, res) => {
-  const { numberOfFlashcards } = req.params.number;
-  // phrases.getPhrase(phrase_id)
-  // .then(data => {
-  //   if(!data) {
-  //     res.status(404).json(error404)
-  //   } else {
-  //     res.status(200).json(data);
-  //   }
-  // })
-  // .catch(error => {
-  //   res.status(500).json(error)
-  // })
 })
 
 // InsertOneFlashcard
