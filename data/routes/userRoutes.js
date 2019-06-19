@@ -15,7 +15,8 @@ router.get('/', (req, res) => {
   db.getDb()
     .db()
     .collection("users")
-    .find().forEach(user => {
+    .find()
+    .forEach(user => {
       userArray.push(user)
     })
     .then(() => {
@@ -25,7 +26,10 @@ router.get('/', (req, res) => {
       res.status(500).json(error500)
     })
 })
-  
+
+// Find user by id.
+
+// Find user by username
 router.get('/:username', (req, res) => {
   const username = req.params.username.toLowerCase()
   const userArray = []
@@ -79,7 +83,10 @@ router.post('/', (req, res) => {
     email: email.toLowerCase(),
     password: password
   }
-  db.getDb().db().collection("users").insertOne(newUser)
+  db.getDb()
+    .db()
+    .collection("users")
+    .insertOne(newUser)
     .then(() => {
       // Output of newUser includes "_id"
       return res.status(201).json({

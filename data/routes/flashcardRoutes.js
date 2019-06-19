@@ -9,29 +9,44 @@ router.use(express.json());
 
 // getFlashcards
 router.get('/', (req, res) => {
-  // phrases.getPhrases()
-  // .then(data => {
-  //   res.status(200).json(data)
-  // })
-  // .catch(()=> {
-  //   res.status(500).json(error500)
-  // })
+  const flashcardArray = []
+  db.getDb()
+    .db()
+    .collection("flashcards")
+    .find()
+    .forEach(card => {
+      flashcardArray.push(card)
+    })
+    .then(() => {
+      res.status(200).json(flashcardArray)
+    })
+    .catch(()=> {
+      res.status(500).json(error500)
+    })
 })
 
 // getFlashcardById
 router.get('/:id', (req, res) => {
   const { id } = req.params;
-  // phrases.getPhrase(phrase_id)
-  // .then(data => {
-  //   if(!data) {
-  //     res.status(404).json(error404)
-  //   } else {
-  //     res.status(200).json(data);
-  //   }
-  // })
-  // .catch(error => {
-  //   res.status(500).json(error)
-  // })
+  const flashcardArray = []
+  db.getDb()
+    .db()
+    .collection("flashcards")
+    .find({_id: new mongodb.ObjectId(id)})
+    .forEach(card => {
+      flashcardArray.push(card)
+    })
+    .then(() => {
+      console.log(flashcardArray)
+      if(flashcardArray.length < 1) {
+        res.status(404).json(error404)
+      } else {
+        res.status(200).json(flashcardArray);
+      }
+    })
+    .catch(error => {
+      res.status(500).json(error)
+    })
 })
 
 // getXNumberOfFlashcards
