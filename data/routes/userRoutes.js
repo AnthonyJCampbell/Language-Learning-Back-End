@@ -20,10 +20,10 @@ router.get('/', (req, res) => {
       userArray.push(user)
     })
     .then(() => {
-      res.status(200).json(userArray)
+      return res.status(200).json(userArray)
     })
     .catch(()=> {
-      res.status(500).json(error500)
+      return res.status(500).json(error500)
     })
 })
 
@@ -41,13 +41,13 @@ router.get('/:id', (req, res) => {
     })
     .then(() => {
       if(userArray.length < 1) {
-        res.status(404).json(error404)
+        return res.status(404).json(error404)
       } else {
         res.status(200).json(userArray);
       }
     })
     .catch(error => {
-      res.status(500).json(error)
+      return res.status(500).json(error)
     })
 })
 
@@ -65,13 +65,13 @@ router.get('/:username', (req, res) => {
     })
     .then(() => {
       if(userArray.length < 1) {
-        res.status(404).json(error404)
+        return res.status(404).json(error404)
       } else {
-        res.status(200).json(userArray);
+        return res.status(200).json(userArray);
       }
     })
     .catch(error => {
-      res.status(500).json(error)
+      return res.status(500).json(error)
     })
 })
 

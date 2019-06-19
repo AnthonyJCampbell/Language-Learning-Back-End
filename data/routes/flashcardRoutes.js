@@ -105,18 +105,31 @@ router.get('/:id', (req, res) => {
 
 // InsertOneFlashcard
 router.post('/', (req, res) => {
-  const flashcard = req.body;
-  // if (!flashcard) {
-  //   res.status(404).json(error404)
-  // } else {
-  //   phrases.addPhrase(user)
-  //   .then(data => {
-  //     res.status(201).json(data)
-  //   })
-  //   .catch(() => {
-  //     res.status(500).json(error500)
-  //   })
-  // }
+  const { englishPhrase, spanishPhrase, keywords} = req.body
+  if (!englishPhrase || !spanishPhrase || keywords) {
+    return res.status(400).json({
+      message: "Make sure your request is complete!"
+    })
+  }
+  const newFlashcard = {
+    englishPhrase: englishPhrase,
+    spanishPhrase: spanishPhrase,
+    keywords: keywords
+  }
+  db.getDb()
+    .db()
+    .collection("flashcards")
+    .insertOne(newFlashcard)
+    .then(() => {
+      // Output of newFlashcard includes "_id"
+      return res.status(201).json({
+        message: "Success!",
+        flashcard: newFlashcard
+      })
+    })
+    .catch(() => {
+      return res.status(500).json(error500)
+    })
 })
 
 // InsertManyFlashcards
