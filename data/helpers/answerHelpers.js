@@ -1,3 +1,4 @@
+const mongodb = require('mongodb'); 
 
 const getAnswers = () =>  {
   // return await db('answers')

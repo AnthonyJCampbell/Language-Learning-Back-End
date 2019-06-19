@@ -1,7 +1,13 @@
+const mongodb = require('mongodb'); 
+const db = require('../../api/db')
+
 const bcrypt = require('bcryptjs');
 
+
 const getUsers = () => {
-  // return db('users')
+  return 
+
+  
 }
 
 const getUser = filter => {
@@ -15,7 +21,6 @@ const getUserByEmail = email_address => {
 }
 
 const addUser = newUser => {
-  const password = bcrypt.hashSync(newUser.password, 12);
   // await db('users').insert({
   //   ...newUser,
   //   password

@@ -4,32 +4,47 @@ const users = require('./../helpers/userHelpers')
 const router = express.Router();
 router.use(express.json());
 
-const error404 = {
-  message: "The requested user doesn't exist"
-}
+const mongodb = require('mongodb'); 
+const db = require('../../api/db')
 
-const error500 = {
-  message: "Something went wrong when getting your request."
-}
+const ObjectId = mongodb.ObjectId;
+
+const bcrypt = require('bcryptjs');
+
 
 router.get('/', (req, res) => {
-  users.getUsers()
-    .then(data => {
-      res.status(200).json(data)
+  const userArray = []
+  db.getDb()
+    .db()
+    .collection("users")
+    .find().forEach(user => {
+      userArray.push(user)
+    })
+    .then(() => {
+      res.status(200).json(userArray)
     })
     .catch(()=> {
       res.status(500).json(error500)
     })
 })
-
-router.get('/:id', (req, res) => {
-  const { id } = req.params;
-  users.getUser(id)
-    .then(data => {
-      if(!data) {
+  
+router.get('/:username', (req, res) => {
+  const username = req.params.username.toLowerCase()
+  const userArray = []
+  db.getDb()
+    .db()
+    .collection("users")
+    .find({name: username})
+    .limit(1)
+    .forEach(user => {
+      userArray.push(user)
+    })
+    .then(() => {
+      console.log(userArray)
+      if(userArray.length < 1) {
         res.status(404).json(error404)
       } else {
-        res.status(200).json(data);
+        res.status(200).json(userArray);
       }
     })
     .catch(error => {
@@ -39,18 +54,32 @@ router.get('/:id', (req, res) => {
 
 // RETURNS ID of new entry
 router.post('/', (req, res) => {
-  const user = req.body;
-  if (!user) {
-    res.status(404).json(error404)
-  } else {
-    users.addUser(user)
-      .then(data => {
-        res.status(201).json(data)
-      })
-      .catch(() => {
-        res.status(500).json(error500)
-      })
+  let { name, email, password } = req.body;
+  if (!name || !email || !password) {
+    return res.status(401).json({
+      message: "Make sure to provide a name, email, and password!"
+    })
   }
+  password = bcrypt.hashSync(password, 12)
+
+  const newUser = {
+    name: name.toLowerCase(),
+    email: email.toLowerCase(),
+    password: password
+  }
+  db.getDb().db().collection("users").insertOne(newUser)
+    // const user = req.body;
+    // if (!user) {
+      //   res.status(404).json(error404)
+      // } else {
+        //   users.addUser(user)
+        //     .then(data => {
+  //       res.status(201).json(data)
+  //     })
+  //     .catch(() => {
+    //       res.status(500).json(error500)
+  //     })
+  // }
 })
 
 router.put('/:user_id', (req, res) => {
@@ -75,12 +104,12 @@ router.put('/:user_id', (req, res) => {
 router.delete('/:filter', (req, res) => {
   const { filter } = req.params;
   users.deleteUser(filter)
-    .then(data => {
-      if (!data) {
-        res.status(404).json(error404)
-      } else {
-        res.status(204).json({
-          message: `Successfully deleted user`
+  .then(data => {
+    if (!data) {
+      res.status(404).json(error404)
+    } else {
+      res.status(204).json({
+        message: `Successfully deleted user`
         })
       }
     })
@@ -90,3 +119,11 @@ router.delete('/:filter', (req, res) => {
 })
 
 module.exports = router;
+
+const error404 = {
+  message: "The requested user doesn't exist"
+}
+
+const error500 = {
+  message: "Something went wrong when getting your request."
+}

@@ -1,7 +1,7 @@
 const mongodb = require('mongodb');
 
 const MongoClient = mongodb.MongoClient;
-const mongoDbUrl = "mongodb+srv://neolang-app:neolang-app@primary-bxmeo.mongodb.net/test?retryWrites=true&w=majority";
+const mongoDbUrl = "mongodb+srv://neolang-app:neolang-app@primary-bxmeo.mongodb.net/neolangApp?retryWrites=true&w=majority";
 
 let _db; 
 
@@ -21,12 +21,12 @@ const initDb = callback => {
     .catch(err => {
       callback(err);
     })
-}
-
-const getDb = () => {
-  if (!_db) {
-    throw Error("Database not initialized!");
   }
+  
+  const getDb = () => {
+    if (!_db) {
+      throw Error("Database not initialized!");
+    }
   return _db;
 }
 
