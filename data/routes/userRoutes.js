@@ -7,8 +7,6 @@ router.use(express.json());
 const mongodb = require('mongodb'); 
 const db = require('../../api/db')
 
-const ObjectId = mongodb.ObjectId;
-
 const bcrypt = require('bcryptjs');
 
 
