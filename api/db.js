@@ -1,7 +1,7 @@
 const mongodb = require('mongodb');
 
 const MongoClient = mongodb.MongoClient;
-const mongoDbUrl = "mongodb+srv://neolang-app:neolang-app@primary-bxmeo.mongodb.net/neolangApp?retryWrites=true&w=majority";
+const mongoDbUrl = `${process.env.MONGOURL}`;
 
 let _db; 
 

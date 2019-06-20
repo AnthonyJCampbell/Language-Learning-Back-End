@@ -12,18 +12,12 @@ server.use(cors())
 // const routes = require('./location');
 const loginAndRegistrationRoutes = require('./../data/routes/loginAndRegistrationRoutes')
 const userRoutes = require('./../data/routes/userRoutes')
-const sessionRoutes = require('./../data/routes/sessionRoutes')
-const phraseRoutes = require('./../data/routes/phraseRoutes')
-const answerRoutes = require('./../data/routes/answerRoutes')
 const flashcardRoutes = require('./../data/routes/flashcardRoutes')
 
 // Routing && prefixing URLs
 // server.use('URL', _ROUTES_);
 server.use('/api', loginAndRegistrationRoutes)
 server.use('/api/users', userRoutes)
-server.use('/api/sessions', sessionRoutes)
-server.use('/api/phrases', phraseRoutes)
-server.use('/api/answers', answerRoutes)
 server.use('/api/flashcards', flashcardRoutes)
 
 server.get('/', (req, res) => {
