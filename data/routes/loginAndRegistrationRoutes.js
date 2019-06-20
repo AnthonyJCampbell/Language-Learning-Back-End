@@ -20,7 +20,7 @@ router.post('/login', (req, res) => {
     })
   }
   
-  if (!email_address.includes('@') || !email_address.includes('.') || email.length < 10) {
+  if (!email.includes('@') || !email.includes('.') || email.length < 10) {
     return res.status(400).json({
       message: "Make sure to pass a valid email address!"
     })
@@ -33,13 +33,23 @@ router.post('/login', (req, res) => {
   //   })
   // }
 
-  users.getUserByEmail(email_address)
-    .then(user => {
+  let userArray = [];
+  db.getDb()
+    .db()
+    .collection("users")
+    .find({email : email})
+    .limit(1)
+    .forEach(user => {
+      userArray.push(user)
+    })
+    .then(() => {
     // SUCCESS CASE: CORRECT USERNAME & PASSWORD.
-      if (user && bcrypt.compareSync(password, user.password)) {
+      let user = userArray[0]
+      if (userArray && bcrypt.compareSync(password, user.password)) {
         const token = tokenService(user);
         // RETURNS A MESSAGE, A TOKEN, AND THE USER OBJECT
         return res.status(200).json({
+          message: "Welcome!",
           token,
           user
         });
@@ -53,7 +63,7 @@ router.post('/login', (req, res) => {
       // FAIL: INCORRECT USERNAME (DEFAULT)
       else {
         return res.status(404).json({
-          message: `There's no user with an 'email_address' of ${req.body.email_address}`
+          message: `There's no user with an email address of ${req.body.email}`
         });
       }
     })
