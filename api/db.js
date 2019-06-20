@@ -21,12 +21,12 @@ const initDb = callback => {
     .catch(err => {
       callback(err);
     })
-  }
+}
   
-  const getDb = () => {
-    if (!_db) {
-      throw Error("Database not initialized!");
-    }
+const getDb = () => {
+  if (!_db) {
+    throw Error("Database not initialized!");
+  }
   return _db;
 }
 
