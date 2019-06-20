@@ -10,10 +10,7 @@ router.use(express.json());
 // getFlashcards
 router.get('/', (req, res) => {
   const flashcardArray = []
-  db.getDb()
-    .db()
-    .collection("flashcards")
-    .find()
+  flashcards.getFlashcards()
     .forEach(card => {
       flashcardArray.push(card)
     })
@@ -29,13 +26,7 @@ router.get('/', (req, res) => {
 router.get('/random/:number', (req, res) => {
   const numberOfFlashcards = req.params.number;
   const flashcardArray = []
-  console.log(numberOfFlashcards)
-  db.getDb()
-    .db()
-    .collection("flashcards")
-    .aggregate([
-      {$sample: {size: mongodb.Decimal128.fromString(numberOfFlashcards)}}
-    ])
+  flashcards.getXNumberOfFlashcards(numberOfFlashcards)
     .forEach(card => {
       flashcardArray.push(card);
     })
@@ -56,10 +47,7 @@ router.get('/random/:number', (req, res) => {
 // getRandomFlashcard
 router.get('/random', (req, res) => {
   const flashcardArray = []
-  db.getDb()
-    .db()
-    .collection("flashcards")
-    .aggregate([{$sample: {size: 1}}])
+  flashcards.getRandomFlashcard()
     .forEach(card => {
       flashcardArray.push(card);
     })
@@ -84,11 +72,9 @@ router.get('/:id', (req, res) => {
     })
   }
   const flashcardArray = []
-  db.getDb()
-    .db()
-    .collection("flashcards")
-    .find({_id: new mongodb.ObjectId(id)})
+  flashcards.getFlashcardById(id)
     .forEach(card => {
+      console.log(card)
       flashcardArray.push(card)
     })
     .then(() => {
@@ -116,10 +102,7 @@ router.post('/', (req, res) => {
     spanishPhrase: spanishPhrase,
     keywords: keywords
   }
-  db.getDb()
-    .db()
-    .collection("flashcards")
-    .insertOne(newFlashcard)
+  flashcards.insertOneFlashcard(newFlashcard)
     .then(() => {
       // Output of newFlashcard includes "_id"
       return res.status(201).json({
@@ -134,13 +117,13 @@ router.post('/', (req, res) => {
 
 // InsertManyFlashcards
 router.post('/many', (req, res) => {
-  const flashcards = req.body;
+  const flashcardsArray = req.body;
   const newFlashcards = []
 
-  flashcards.forEach((card, idx) => {
-    if (!card.englishPhrase || !card.spanishPhrase || !card.keywords) {
-      return res.status(400).json({message: `Something is wrong with entry no. ${idx + 1}`})
-    }
+  flashcardsArray.forEach((card, idx) => {
+    // if (!card.englishPhrase || !card.spanishPhrase || !card.keywords) {
+    //   return res.status(400).json({message: `Something is wrong with entry no. ${idx + 1}`})
+    // }
 
     newFlashcards.push({
       englishPhrase: card.englishPhrase,
@@ -149,10 +132,7 @@ router.post('/many', (req, res) => {
     })
   })
 
-  db.getDb()
-    .db()
-    .collection("flashcards")
-    .insertMany(newFlashcards)
+  flashcards.insertManyFlashcards(newFlashcards)
     .then(() => {
       // Output of newFlashCards includes "_id"
       return res.status(201).json({
@@ -166,16 +146,16 @@ router.post('/many', (req, res) => {
 })
 
 // editFlashcard
-router.put('/:id', (req, res) => {
-  const { id } = req.params;
+// router.put('/:id', (req, res) => {
+//   const { id } = req.params;
 
-})
+// })
 
-// deleteFlashcard
-router.delete('/:id', (req, res) => {
-  const { id } = req.params;
+// // deleteFlashcard
+// router.delete('/:id', (req, res) => {
+//   const { id } = req.params;
   
-})
+// })
 
 const error404 = {
   message: "The requested flashcard doesn't exist"

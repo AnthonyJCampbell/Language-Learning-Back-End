@@ -1,39 +1,66 @@
 const mongodb = require('mongodb'); 
+const db = require('../../api/db')
 
 const getFlashcards = () =>  {
+  return db.getDb()
+  .db()
+  .collection("flashcards")
+  .find()
+}
 
+
+const getXNumberOfFlashcards = (numberOfFlashcards) => {
+  return db.getDb()
+  .db()
+  .collection("flashcards")
+  .aggregate([
+    {$sample: {size: mongodb.Decimal128.fromString(numberOfFlashcards)}}
+  ])
+}
+
+const getRandomFlashcard = () => {
+  return db.getDb()
+    .db()
+    .collection("flashcards")
+    .aggregate([{$sample: {size: 1}}])
 }
 
 const getFlashcardById = (id) => {
-
+  return db.getDb()
+    .db()
+    .collection("flashcards")
+    .find({_id: new mongodb.ObjectId(id)})
 }
 
-const getXNumberOfFlashcards = (numberOfFlashcards) => {
-
+const insertOneFlashcard = (newFlashcard) => {
+  return db.getDb()
+    .db()
+    .collection("flashcards")
+    .insertOne(newFlashcard)
 }
 
-const insertOneFlashcard = (flashcard) => {
-
+const insertManyFlashcards = (newFlashcards) => {
+  return db.getDb()
+    .db()
+    .collection("flashcards")
+    .insertMany(newFlashcards)
 }
 
-const insertManyFlashcards = (flashcards) => {
+// const editFlashcard = (id) => {
 
-}
+// }
 
-const editFlashcard = (id) => {
+// const deleteFlashcard = (id) => {
 
-}
-
-const deleteFlashcard = (id) => {
-
-}
+// }
 
 module.exports = {
   getFlashcards,
-  getFlashcardById,
   getXNumberOfFlashcards,
+  getRandomFlashcard,
+  getFlashcardById,
   insertOneFlashcard,
   insertManyFlashcards,
-  editFlashcard,
-  deleteFlashcard
+  // editFlashcard,
+  // deleteFlashcard
 }

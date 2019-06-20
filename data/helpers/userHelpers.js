@@ -27,6 +27,14 @@ const getUserByName = name => {
     .limit(1)
 }
 
+const getUserByEmail = email => {
+  return db.getDb()
+    .db()
+    .collection("users")
+    .find({email: email.toString()})
+    .limit(1)
+}
+
 const addUser = newUser => {
   return db.getDb()
     .db()
@@ -59,6 +67,7 @@ module.exports = {
   getUsers,
   getUserById,
   getUserByName,
+  getUserByEmail,
   addUser,
   // updateUser,
   // deleteUser

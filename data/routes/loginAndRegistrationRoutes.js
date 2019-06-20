@@ -34,11 +34,7 @@ router.post('/login', (req, res) => {
   // }
 
   let userArray = [];
-  db.getDb()
-    .db()
-    .collection("users")
-    .find({email : email})
-    .limit(1)
+  users.getUserByEmail(email)
     .forEach(user => {
       userArray.push(user)
     })
@@ -103,10 +99,7 @@ router.post('/register', (req, res) => {
     password: password.toString()
   }
 
-  db.getDb()
-    .db()
-    .collection("users")
-    .insertOne(newUser)
+  users.addUser(newUser)
     .then(user => {
       const token = tokenService(user);
       // Output of newUser includes "_id"
