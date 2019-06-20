@@ -12,10 +12,7 @@ const bcrypt = require('bcryptjs');
 
 router.get('/', (req, res) => {
   const userArray = []
-  db.getDb()
-    .db()
-    .collection("users")
-    .find()
+  users.getUsers()
     .forEach(user => {
       userArray.push(user)
     })
@@ -31,11 +28,7 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
   const { id } = req.params
   const userArray = []
-  db.getDb()
-    .db()
-    .collection("users")
-    .find({_id: new mongodb.ObjectId(id)})
-    .limit(1)
+  users.getUserById(id)
     .forEach(user => {
       userArray.push(user)
     })
@@ -51,15 +44,11 @@ router.get('/:id', (req, res) => {
     })
 })
 
-// Find user by username
-router.get('/:username', (req, res) => {
-  const username = req.params.username.toLowerCase()
+// Find user by name
+router.get('/n/:name', (req, res) => {
+  const name = req.params.name.toLowerCase()
   const userArray = []
-  db.getDb()
-    .db()
-    .collection("users")
-    .find({name: username})
-    .limit(1)
+  users.getUserByName(name)
     .forEach(user => {
       userArray.push(user)
     })
@@ -75,7 +64,7 @@ router.get('/:username', (req, res) => {
     })
 })
 
-// RETURNS ID of new entry
+// addUser
 router.post('/', (req, res) => {
   let { name, email, password } = req.body;
   
@@ -104,11 +93,7 @@ router.post('/', (req, res) => {
     email: email.toLowerCase(),
     password: password
   }
-
-  db.getDb()
-    .db()
-    .collection("users")
-    .insertOne(newUser)
+  users.addUser(newUser)
     .then(() => {
       // Output of newUser includes "_id"
       return res.status(201).json({
@@ -121,41 +106,41 @@ router.post('/', (req, res) => {
     })
 })
 
-router.put('/:user_id', (req, res) => {
-  const { user_id } = req.params;
-  const updates = req.body;
-  if (!updates.username && !update.email_address && !updates.password) {
-    res.status(404).json({
-      message: `Hey! Make sure to pass either a 'username', 'email_address', or 'password' if you want to change it!`
-    })
-  } else {
-    users.updateUser(user_id, updates)
-    .then(user => {
-      return res.status(200).json(user);
-    })
-    .catch(() => {
-      return res.status(500).json(error500);
-    });
-  }
-})
+// router.put('/:user_id', (req, res) => {
+//   const { user_id } = req.params;
+//   const updates = req.body;
+//   if (!updates.username && !update.email_address && !updates.password) {
+//     res.status(404).json({
+//       message: `Hey! Make sure to pass either a 'username', 'email_address', or 'password' if you want to change it!`
+//     })
+//   } else {
+//     users.updateUser(user_id, updates)
+//     .then(user => {
+//       return res.status(200).json(user);
+//     })
+//     .catch(() => {
+//       return res.status(500).json(error500);
+//     });
+//   }
+// })
 
-// Returns empty
-router.delete('/:filter', (req, res) => {
-  const { filter } = req.params;
-  users.deleteUser(filter)
-  .then(data => {
-    if (!data) {
-      return res.status(404).json(error404)
-    } else {
-      return res.status(204).json({
-        message: `Successfully deleted user`
-        })
-      }
-    })
-    .catch(() => {
-      res.status(500).json(error500)
-    })
-})
+// // Returns empty
+// router.delete('/:filter', (req, res) => {
+//   const { filter } = req.params;
+//   users.deleteUser(filter)
+//   .then(data => {
+//     if (!data) {
+//       return res.status(404).json(error404)
+//     } else {
+//       return res.status(204).json({
+//         message: `Successfully deleted user`
+//         })
+//       }
+//     })
+//     .catch(() => {
+//       res.status(500).json(error500)
+//     })
+// })
 
 module.exports = router;
 
