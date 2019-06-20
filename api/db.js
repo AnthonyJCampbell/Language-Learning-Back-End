@@ -1,7 +1,7 @@
 const mongodb = require('mongodb');
 
 const MongoClient = mongodb.MongoClient;
-const mongoDbUrl = `${process.env.MONGOURL}`;
+const MONGO_URL = `${process.env.MONGO_URL}`;
 
 let _db; 
 
@@ -13,7 +13,7 @@ const initDb = callback => {
     return callback(null, _db);
   }
   // If it's not initialized, connect to the database.
-  MongoClient.connect(mongoDbUrl, { useNewUrlParser: true })
+  MongoClient.connect(MONGO_URL, { useNewUrlParser: true })
     .then(client => {
       _db = client;
       callback(null, _db)
