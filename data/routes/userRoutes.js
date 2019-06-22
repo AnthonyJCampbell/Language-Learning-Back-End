@@ -106,23 +106,30 @@ router.post('/', (req, res) => {
     })
 })
 
-// router.put('/:user_id', (req, res) => {
-//   const { user_id } = req.params;
-//   const updates = req.body;
-//   if (!updates.username && !update.email_address && !updates.password) {
-//     res.status(404).json({
-//       message: `Hey! Make sure to pass either a 'username', 'email_address', or 'password' if you want to change it!`
-//     })
-//   } else {
-//     users.updateUser(user_id, updates)
-//     .then(user => {
-//       return res.status(200).json(user);
-//     })
-//     .catch(() => {
-//       return res.status(500).json(error500);
-//     });
-//   }
-// })
+// TO-DO: Dedicated PUT route for changing password.
+
+// Change user name and email
+router.put('/:id', (req, res) => {
+  // Requires name and email. PASSWORD WILL BE ADDED IN A BIT
+  const { id } = req.params;
+  const updates = {
+    name: req.body.name,
+    email: req.body.email
+  };
+  if (!updates.name && !updates.email) {
+    res.status(404).json({
+      message: `Hey! Make sure to pass either a name or email if you want to change it!`
+    })
+  } else {
+    users.updateUser(id, updates)
+    .then(user => {
+      return res.status(200).json(user);
+    })
+    .catch(() => {
+      return res.status(500).json(error500);
+    });
+  }
+})
 
 // Returns empty
 router.delete('/:id', (req, res) => {
