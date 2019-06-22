@@ -42,26 +42,22 @@ const addUser = newUser => {
     .insertOne(newUser)
 }
   
-// const updateUser = (user_id, updates) => {
-//   if (updates.password) {
-//     const password = bcrypt.hashSync(updates.password, 12);
-//     // await db('users')
-//     //   .where({ user_id })
-//     //   .update({ ...updates, password });
-//     // return await getUser(user_id)
-//   } else {
-//     // await db('users')
-//     //   .where({ user_id })
-//     //   .update(updates);
-//     // return await getUser(user_id)
-//   }
-// }
+const updateUser = (id, updates) => {
+  return db.getDb()
+    .db()
+    .collection("user")
+    .updateOne(
+      {_id: new mongodb.ObjectId(id)},
+      {$set: updates}
+    )
+}
   
-// const deleteUser = user_id => {
-//   // return await db('users')
-//   //   .where({user_id})
-//   //   .del()
-// }
+const deleteUser = id => {
+  return db.getDb()
+    .db()
+    .collection("users")
+    .deleteOne({_id: new mongodb.ObjectId(id)})
+}
 
 module.exports = {
   getUsers,
@@ -69,6 +65,6 @@ module.exports = {
   getUserByName,
   getUserByEmail,
   addUser,
-  // updateUser,
-  // deleteUser
+  updateUser,
+  deleteUser
 }
