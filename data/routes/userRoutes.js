@@ -124,23 +124,23 @@ router.post('/', (req, res) => {
 //   }
 // })
 
-// // Returns empty
-// router.delete('/:filter', (req, res) => {
-//   const { filter } = req.params;
-//   users.deleteUser(filter)
-//   .then(data => {
-//     if (!data) {
-//       return res.status(404).json(error404)
-//     } else {
-//       return res.status(204).json({
-//         message: `Successfully deleted user`
-//         })
-//       }
-//     })
-//     .catch(() => {
-//       res.status(500).json(error500)
-//     })
-// })
+// Returns empty
+router.delete('/:id', (req, res) => {
+  const { id } = req.params;
+  users.deleteUser(id)
+  .then(data => {
+    if (!data) {
+      return res.status(400).json(error404)
+    } else {
+      return res.status(204).json({
+        message: "Successfully deleted user"
+        })
+      }
+    })
+    .catch(() => {
+      res.status(500).json(error500)
+    })
+})
 
 module.exports = router;
 

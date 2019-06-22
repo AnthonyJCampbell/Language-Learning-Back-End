@@ -57,11 +57,12 @@ const addUser = newUser => {
 //   }
 // }
   
-// const deleteUser = user_id => {
-//   // return await db('users')
-//   //   .where({user_id})
-//   //   .del()
-// }
+const deleteUser = id => {
+  return db.getDb()
+    .db()
+    .collection("users")
+    .deleteOne({_id: new mongodb.ObjectId(id)})
+}
 
 module.exports = {
   getUsers,
@@ -70,5 +71,5 @@ module.exports = {
   getUserByEmail,
   addUser,
   // updateUser,
-  // deleteUser
+  deleteUser
 }
