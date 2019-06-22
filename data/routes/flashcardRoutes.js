@@ -92,7 +92,7 @@ router.get('/:id', (req, res) => {
 // InsertOneFlashcard
 router.post('/', (req, res) => {
   const { englishPhrase, spanishPhrase, keywords} = req.body
-  if (!englishPhrase || !spanishPhrase || keywords) {
+  if (!englishPhrase || !spanishPhrase || !keywords) {
     return res.status(400).json({
       message: "Make sure your request is complete!"
     })
