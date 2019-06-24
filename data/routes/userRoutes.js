@@ -136,7 +136,7 @@ router.put('/p/:id', (req, res) => {
 })
 
 // Change user name and email
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
   // Requires name and email. PASSWORD WILL BE ADDED IN A BIT
   const { id } = req.params;
   const userArray = []
@@ -147,37 +147,24 @@ router.put('/:id', (req, res) => {
     })
   } 
 
-  if (!req.body.email) {
-    users.updateName(id, req.body.name)
-    .then(() => {
-      users.getUserById(id)
-      .forEach(user => {
-        userArray.push(user)
-      })
-      .then(() => {
-        return res.status(200).json(userArray);
-      })
-    })
+  if (req.body.name) {
+    await users.updateName(id, req.body.name)
     .catch(() => {
       return res.status(500).json(error500);
     });
   } 
   
-  else {
-    users.updateEmail(id, req.body.email)
-    .then(() => {
-      users.getUserById(id)
-      .forEach(user => {
-        userArray.push(user)
-      })
-      .then(() => {
-        return res.status(200).json(userArray);
-      })
-    })
+  if (req.body.email) {
+    await users.updateEmail(id, req.body.email)
     .catch(() => {
       return res.status(500).json(error500);
     });
   }
+  await users.getUserById(id)
+    .forEach(user => {
+      userArray.push(user)
+  })
+  return res.status(200).json(userArray);
 })
 
 // Returns empty
