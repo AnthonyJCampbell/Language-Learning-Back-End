@@ -106,7 +106,28 @@ router.post('/', (req, res) => {
     })
 })
 
-// TO-DO: Dedicated PUT route for changing password.
+// Change password
+router.put('/p/:id', (req, res) => {
+  // Requires name and email. PASSWORD WILL BE ADDED IN A BIT
+  const { id } = req.params;
+  const password = bcrypt.hashSync(req.body.password, 12);
+  const updates = {
+    password: password
+  };
+  if (!updates.password) {
+    res.status(404).json({
+      message: `Make sure to pass a password`
+    })
+  } else {
+    users.updateUser(id, updates)
+    .then(user => {
+      return res.status(200).json(user);
+    })
+    .catch(() => {
+      return res.status(500).json(error500);
+    });
+  }
+})
 
 // Change user name and email
 router.put('/:id', (req, res) => {
