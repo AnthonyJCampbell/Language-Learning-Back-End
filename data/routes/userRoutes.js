@@ -111,15 +111,16 @@ router.put('/p/:id', (req, res) => {
   // Requires name and email. PASSWORD WILL BE ADDED IN A BIT
   const { id } = req.params;
   const password = bcrypt.hashSync(req.body.password, 12);
-  const updates = {
+  const newPassword = {
     password: password
   };
-  if (!updates.password) {
+
+  if (!password) {
     res.status(404).json({
       message: `Make sure to pass a password`
     })
   } else {
-    users.updateUser(id, updates)
+    users.updatePassword(id, newPassword)
     .then(user => {
       return res.status(200).json(user);
     })
@@ -128,14 +129,14 @@ router.put('/p/:id', (req, res) => {
     });
   }
 })
-
 // Change user name and email
 router.put('/:id', (req, res) => {
   // Requires name and email. PASSWORD WILL BE ADDED IN A BIT
   const { id } = req.params;
+
   const updates = {
     name: req.body.name,
-    email: req.body.email
+    email: req.body.email,
   };
   if (!updates.name && !updates.email) {
     res.status(404).json({
