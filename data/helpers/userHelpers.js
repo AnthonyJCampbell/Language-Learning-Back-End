@@ -56,7 +56,7 @@ const updateEmail = (id, newEmail) => {
   return db.getDb()
     .db()
     .collection("users")
-    .update(
+    .updateOne(
       {_id: new mongodb.ObjectId(id)},
       {$set: {email: newEmail}}
     )
@@ -67,7 +67,7 @@ const updatePassword = (id, newPassword) => {
   return db.getDb()
     .db()
     .collection("users")
-    .update(
+    .updateOne(
       {_id: new mongodb.ObjectId(id)},
       {$set: {password: newPassword}}
     )
@@ -78,7 +78,7 @@ const updateUser = (id, updates) => {
   return db.getDb()
     .db()
     .collection("users")
-    .update(
+    .updateOne(
       {_id: new mongodb.ObjectId(id)},
       {$set: updates}
     )

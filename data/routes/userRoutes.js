@@ -129,21 +129,30 @@ router.put('/p/:id', (req, res) => {
     });
   }
 })
+
 // Change user name and email
 router.put('/:id', (req, res) => {
   // Requires name and email. PASSWORD WILL BE ADDED IN A BIT
   const { id } = req.params;
 
-  const updates = {
-    name: req.body.name,
-    email: req.body.email,
-  };
-  if (!updates.name && !updates.email) {
+  if (!req.body.name && !req.body.email) {
     res.status(404).json({
       message: `Hey! Make sure to pass either a name or email if you want to change it!`
     })
+  } 
+  console.log('test')
+  if (!req.body.email) {
+    console.log('here')
+    users.updateName(id, req.body.name)
+    .then(user => {
+      return res.status(200).json(user);
+    })
+    .catch(() => {
+      return res.status(500).json(error500);
+    });
   } else {
-    users.updateUser(id, updates)
+    console.log
+    users.updateEmail(id, req.body.email)
     .then(user => {
       return res.status(200).json(user);
     })
