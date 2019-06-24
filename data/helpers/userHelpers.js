@@ -46,7 +46,7 @@ const updateName = (id, newName) => {
   return db.getDb()
     .db()
     .collection("users")
-    .update(
+    .updateOne(
       {_id: new mongodb.ObjectId(id)},
       {$set: {name: newName}}
     )

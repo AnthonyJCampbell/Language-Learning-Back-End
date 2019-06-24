@@ -110,19 +110,24 @@ router.post('/', (req, res) => {
 router.put('/p/:id', (req, res) => {
   // Requires name and email. PASSWORD WILL BE ADDED IN A BIT
   const { id } = req.params;
-  const password = bcrypt.hashSync(req.body.password, 12);
-  const newPassword = {
-    password: password
-  };
+  const userArray = []
 
-  if (!password) {
-    res.status(404).json({
+  const newPassword = bcrypt.hashSync(req.body.password, 12);
+  
+  if (!newPassword) {
+    return res.status(404).json({
       message: `Make sure to pass a password`
     })
   } else {
     users.updatePassword(id, newPassword)
-    .then(user => {
-      return res.status(200).json(user);
+    .then(() => {
+      users.getUserById(id)
+      .forEach(user => {
+        userArray.push(user)
+      })
+      .then(() => {
+        return res.status(200).json(userArray);
+      })
     })
     .catch(() => {
       return res.status(500).json(error500);
@@ -134,27 +139,40 @@ router.put('/p/:id', (req, res) => {
 router.put('/:id', (req, res) => {
   // Requires name and email. PASSWORD WILL BE ADDED IN A BIT
   const { id } = req.params;
+  const userArray = []
 
   if (!req.body.name && !req.body.email) {
-    res.status(404).json({
+    return res.status(404).json({
       message: `Hey! Make sure to pass either a name or email if you want to change it!`
     })
   } 
-  console.log('test')
+
   if (!req.body.email) {
-    console.log('here')
     users.updateName(id, req.body.name)
-    .then(user => {
-      return res.status(200).json(user);
+    .then(() => {
+      users.getUserById(id)
+      .forEach(user => {
+        userArray.push(user)
+      })
+      .then(() => {
+        return res.status(200).json(userArray);
+      })
     })
     .catch(() => {
       return res.status(500).json(error500);
     });
-  } else {
-    console.log
+  } 
+  
+  else {
     users.updateEmail(id, req.body.email)
-    .then(user => {
-      return res.status(200).json(user);
+    .then(() => {
+      users.getUserById(id)
+      .forEach(user => {
+        userArray.push(user)
+      })
+      .then(() => {
+        return res.status(200).json(userArray);
+      })
     })
     .catch(() => {
       return res.status(500).json(error500);
