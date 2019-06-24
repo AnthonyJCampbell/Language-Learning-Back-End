@@ -41,11 +41,43 @@ const addUser = newUser => {
     .collection("users")
     .insertOne(newUser)
 }
-  
+
+const updateName = (id, newName) => {
+  return db.getDb()
+    .db()
+    .collection("users")
+    .updateOne(
+      {_id: new mongodb.ObjectId(id)},
+      {$set: {name: newName}}
+    )
+}
+
+const updateEmail = (id, newEmail) => {
+  return db.getDb()
+    .db()
+    .collection("users")
+    .updateOne(
+      {_id: new mongodb.ObjectId(id)},
+      {$set: {email: newEmail}}
+    )
+}
+
+
+const updatePassword = (id, newPassword) => {
+  return db.getDb()
+    .db()
+    .collection("users")
+    .updateOne(
+      {_id: new mongodb.ObjectId(id)},
+      {$set: {password: newPassword}}
+    )
+}
+
+
 const updateUser = (id, updates) => {
   return db.getDb()
     .db()
-    .collection("user")
+    .collection("users")
     .updateOne(
       {_id: new mongodb.ObjectId(id)},
       {$set: updates}
@@ -66,5 +98,8 @@ module.exports = {
   getUserByEmail,
   addUser,
   updateUser,
+  updateName,
+  updateEmail,
+  updatePassword,
   deleteUser
 }

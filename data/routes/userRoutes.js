@@ -106,24 +106,73 @@ router.post('/', (req, res) => {
     })
 })
 
-// TO-DO: Dedicated PUT route for changing password.
+// Change password
+router.put('/p/:id', (req, res) => {
+  // Requires name and email. PASSWORD WILL BE ADDED IN A BIT
+  const { id } = req.params;
+  const userArray = []
+
+  const newPassword = bcrypt.hashSync(req.body.password, 12);
+  
+  if (!newPassword) {
+    return res.status(404).json({
+      message: `Make sure to pass a password`
+    })
+  } else {
+    users.updatePassword(id, newPassword)
+    .then(() => {
+      users.getUserById(id)
+      .forEach(user => {
+        userArray.push(user)
+      })
+      .then(() => {
+        return res.status(200).json(userArray);
+      })
+    })
+    .catch(() => {
+      return res.status(500).json(error500);
+    });
+  }
+})
 
 // Change user name and email
 router.put('/:id', (req, res) => {
   // Requires name and email. PASSWORD WILL BE ADDED IN A BIT
   const { id } = req.params;
-  const updates = {
-    name: req.body.name,
-    email: req.body.email
-  };
-  if (!updates.name && !updates.email) {
-    res.status(404).json({
+  const userArray = []
+
+  if (!req.body.name && !req.body.email) {
+    return res.status(404).json({
       message: `Hey! Make sure to pass either a name or email if you want to change it!`
     })
-  } else {
-    users.updateUser(id, updates)
-    .then(user => {
-      return res.status(200).json(user);
+  } 
+
+  if (!req.body.email) {
+    users.updateName(id, req.body.name)
+    .then(() => {
+      users.getUserById(id)
+      .forEach(user => {
+        userArray.push(user)
+      })
+      .then(() => {
+        return res.status(200).json(userArray);
+      })
+    })
+    .catch(() => {
+      return res.status(500).json(error500);
+    });
+  } 
+  
+  else {
+    users.updateEmail(id, req.body.email)
+    .then(() => {
+      users.getUserById(id)
+      .forEach(user => {
+        userArray.push(user)
+      })
+      .then(() => {
+        return res.status(200).json(userArray);
+      })
     })
     .catch(() => {
       return res.status(500).json(error500);
